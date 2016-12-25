@@ -1,23 +1,31 @@
 /****************************************
 *** TRANSACTIONS
 ****************************************/
-
+.transactions {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+}
 .income,
 .expenses{
   display: flex;
   flex-direction: column;
-  width: 48%;
+  width: 100%;
   &__title {
     text-transform: uppercase;
-    font-size: 1.25em;
+    font-size: 1em;
     font-weight: 400;
     margin-bottom: 15px;
-    margin-left: 10px;
+    padding: 5px 10px;
+    color: #fff;
+    font-weight: bold;
   }
 }
 .income {
   &__title {
-  color: $incomeGreen;
+  background-color: $incomeGreen;
   }
   .item__value,
   .item__delete--btn {
@@ -26,7 +34,8 @@
 }
 .expenses {
   &__title {
-  color: $expenseRed;
+  background-color: $expenseRed;
+    color: #fff;
   }
   .item__value,
   .item__percentage,
@@ -38,7 +47,7 @@
 .item {
   display: flex;
   justify-content: space-between;
-  padding: 13px;
+  padding: 5px;
   border-bottom: 1px solid $inputAccent;
   &:hover .item__delete--btn {
     display: block;
@@ -96,5 +105,77 @@
   }
   .item__percentage {
     box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.1);
+  }
+}
+
+
+//================  MEDIA QUERIES  ============================
+
+
+// SM sized media-queries
+@mixin transDisp--sm() {
+  .item {
+    padding: 10px;
+  }
+}
+
+
+// MD sized media-queries
+@mixin transDisp--md() {
+  .transactions {
+    flex-direction: row;
+    justify-content: space-between;
+    max-width: 1000px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .income,
+  .expenses{
+    display: flex;
+    flex-direction: column;
+    width: 48%;
+    margin-top: 10px;
+    &__title {
+      background-color: transparent;
+      font-weight: normal;
+      font-size: 1.2em;
+    }
+  }
+  .income {
+    &__title {
+      color: $incomeGreen;
+    }
+  }
+  .expenses {
+    &__title {
+      color: $expenseRed;
+    }
+  }
+
+  .item {
+    padding: 15px;
+  }
+}
+
+
+// LG sized media-queries
+@mixin transDisp--lg() {
+
+  .item {
+    padding: 20px;
+  }
+
+  .income,
+  .expenses{
+    display: flex;
+    flex-direction: column;
+    width: 48%;
+    margin-top: 10px;
+    &__title {
+      background-color: transparent;
+      font-weight: normal;
+      font-size: 1.5em;
+    }
   }
 }

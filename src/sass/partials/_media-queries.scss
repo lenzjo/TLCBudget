@@ -1,0 +1,29 @@
+/****************************************
+*** MEDIA QUERIES
+****************************************/
+
+// This is a mobile-first set-up
+
+
+// sm Breakpoint - approx Tablet size
+@media (min-width: 530px) {
+  @include budget--sm();
+  @include transCtrl--sm();
+  @include transDisp--sm();
+}
+
+
+// md Breakpoint - approx Medium Desktop size
+@media (min-width: 800px) {
+  @include budget--md();
+  @include transCtrl--md();
+  @include transDisp--md();
+}
+
+
+// lg Breakpoint - Approx Large Desktop size
+@media (min-width: 1200px) {
+  @include budget--lg();
+  @include transCtrl--lg();
+  @include transDisp--lg();
+}

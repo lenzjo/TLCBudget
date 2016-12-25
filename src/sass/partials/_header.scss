@@ -3,6 +3,9 @@
 ****************************************/
 
 .header {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
   background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(back.png);
   background-size: cover;
   background-position: center;
@@ -11,21 +14,23 @@
 .budget {
   color: #fff;
   &__title {
-    font-size: 1.6em;
+    font-size: 1.2em;
     text-align: center;
-    margin: 10px 0;
+    margin: 5px 0;
+    font-weight: 300;
   }
   &__value {
-    font-size: 3em;
+    font-size: 2.5em;
+    font-weight: 300;
     text-align: center;
     letter-spacing: 2px;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
   }
   &__income,
   &__expenses {
     text-transform: uppercase;
     border-radius: 5px;
-    padding: 12px;
+    padding: 5px;
     display: flex;
     justify-content: space-between;
     .amounts {
@@ -33,9 +38,7 @@
       justify-content: space-between;
     }
     &--text {
-      font-size: 1.1em;
       color: #444;
-      margin-top: 2px;
     }
     &--value {
       letter-spacing: 1px;
@@ -53,11 +56,75 @@
   }
   &__expenses {
     background-color: $expenseRed;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     &--percentage {
       background-color: rgba(255, 255, 255, 0.2);
       text-align: center;
       border-radius: 3px;
+    }
+  }
+}
+
+
+//================  MEDIA QUERIES  ============================
+
+
+// SM sized media-queries
+@mixin budget--sm() {
+  .budget {
+    &__title {
+      font-size: 1.6em;
+    }
+    &__value {
+      font-size: 3em;
+    }
+    &__income,
+    &__expenses {
+      padding: 12px;
+    }
+    &--text {
+      font-size: 1.1em;
+    }
+  }
+}
+
+
+// MD sized media-queries
+@mixin budget--md() {
+  .budget {
+    &__title {
+      margin-top: 10px;
+    }
+    &__value {
+      font-size: 3.5em;
+      margin-bottom: 30px;
+    }
+    &__expenses {
+      margin-bottom: 20px;
+    }
+  }
+}
+
+
+// LG sized media-queries
+@mixin budget--lg() {
+  .budget {
+    &__title {
+      margin-top: 10px;
+    }
+    &__value {
+      font-size: 4em;
+      margin-bottom: 30px;
+    }
+    &__income,
+    &__expenses {
+      font-size: 1.2em;
+      &__percentage {
+        font-size: 1em;
+      }
+    }
+    &__income {
+      margin-bottom: 15px;
     }
   }
 }

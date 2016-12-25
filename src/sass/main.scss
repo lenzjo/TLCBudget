@@ -1,11 +1,15 @@
 @import 'normalize';
 @include normalize();
 
+@import 'partials/variables';     // Good
 
-@import 'partials/variables';
+@import 'partials/global';        // Good
+@import 'partials/header';        // Good
+@import 'partials/controlbar';    // Good
+@import 'partials/transactions';  //
 
-@import 'partials/layout';
-@import 'partials/header';
-@import 'partials/controlbar';
-@import 'partials/transactions';
+
+
+
+@import 'partials/media-queries';
 

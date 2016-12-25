@@ -3,28 +3,33 @@
 ****************************************/
 
 .transaction__control {
-    padding: 14px;
+  padding: 5px;
   border-bottom: 1px solid $inputAccent;
   background-color: $inputBG;
   &--container {
     margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
   }
 }
 
 .add {
   &__type {
-    font-size: 1.2em;
+    order: 2;
     background-color: #fff;
     color: inherit;
-    margin-right: 10px;
-    padding: 0 5px;
+    padding: 0 1px;
     border-radius: 5px;
   }
   &__description {
-    width: 350px;
+    order: 1;
+    width: 100%;
+    margin-bottom: 5px;
   }
   &__value {
     width: 60px;
+    order: 3;
   }
   &__description,
   &__value {
@@ -33,15 +38,16 @@
     color: inherit;
     border-radius: 5px;
     font-family: inherit;
-    padding: 12px 15px;
-    margin-right: 10px;
+    padding: 4px 6px;
   }
   &__btn {
+    order: 4;
     background: none;
     color: $incomeGreen;
     border: none;
     cursor: pointer;
-    font-size: 2.1em;
+    font-size: 1.5em;
+    margin-left: 10px;
     &:active {
       transform: translate(2px);
     }
@@ -55,4 +61,67 @@
     outline: none;
     border: 1px solid $incomeGreen;
   }
+}
+
+
+//================  MEDIA QUERIES  ============================
+
+
+
+// SM sized media-queries
+@mixin transCtrl--sm() {
+  .transaction__control {
+    padding: 7px;
+  }
+  .add {
+    flex-wrap: nowrap;
+    justify-content: center;
+    &__type {
+      order: 1;
+      margin-right: 5px;
+    }
+    &__description {
+      order: 2;
+      width: 350px;
+      margin-bottom: 0;
+      margin-right: 5px;
+    }
+    &__value {
+      order: 3;
+      width: 60px;
+    }
+    &__btn {
+      order: 4;
+    }
+  }
+}
+
+
+// MD sized media-queries
+@mixin transCtrl--md() {
+  .transaction__control {
+    padding: 10px;
+  }
+  .add {
+    &__type {
+      padding: 0 5px;
+      margin-right: 10px;
+    }
+    &__description,
+    &__value {
+      padding: 12px 15px;
+    }
+    &__description {
+      margin-right: 10px;
+    }
+    &__btn {
+      font-size: 2em;
+    }
+  }
+}
+
+
+// LG sized media-queries
+@mixin transCtrl--lg() {
+
 }

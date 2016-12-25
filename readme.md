@@ -47,7 +47,7 @@ My purpose in doing this is to practise what I have learnt in the course and bec
 
 **Phase 1**: Completed.
 
-**Phase 2**: Flex stuff done, responsive next.
+**Phase 2**: Completed.
 
 **Phase 3**:
 
