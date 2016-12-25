@@ -15,7 +15,18 @@ var UIController = (function() {
     percentageLabel:    '.budget__expenses--percentage',
     container:          '.transactions',
     expensesPercLabel:  '.item__percentage',
-    dateLabel:          '.budget__title--month'
+    dateLabel:          '.budget__title--month',
+
+    alertError:         '.alerts__msg-error',
+    alertSuccess:       '.alerts__msg-success',
+  };
+
+
+  var alertMessages = {
+    error:              'error',
+    success:            'success',
+    missingDescription: 'Missing Description.',
+    missingAmount:      'Missing Amount',
   };
 
 
@@ -31,9 +42,7 @@ var UIController = (function() {
       int = int.substr(0, int.length - 3) + ',' + int.substr(int.length - 3, 3);
     }
     dec = numSplit[1];
-
     return (type === 'exp' ? '-' : '+') + ' ' + int + '.' + dec;
-
   };
 
 
@@ -44,8 +53,12 @@ var UIController = (function() {
   };
 
 
-  return {
+  var capitalize = function(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+  };
 
+
+  return {
 
     getInput: function() {
       return {
@@ -59,17 +72,14 @@ var UIController = (function() {
     addListItem: function(obj, type) {
       var html, newHtml, element;
       // Create HTML string with placeholder text
-
       if (type === 'inc') {
         element = DOMstrings.incomeContainer;
-
         html = '<div class="item" id="inc-%id%"><div class="item__description">%description%</div><div class="amount"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
+
       } else if (type === 'exp') {
         element = DOMstrings.expensesContainer;
-
         html = '<div class="item" id="exp-%id%"><div class="item__description">%description%</div><div class="amount"><div class="item__value">%value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
       }
-
       // Replace the placeholder text with some actual data
       newHtml = html.replace('%id%', obj.id);
       newHtml = newHtml.replace('%description%', obj.description);
@@ -80,10 +90,8 @@ var UIController = (function() {
 
 
     deleteListItem: function(selectorID) {
-
       var el = document.getElementById(selectorID);
       el.parentNode.removeChild(el);
-
     },
 
 
@@ -91,13 +99,10 @@ var UIController = (function() {
       var fields, fieldsArr;
 
       fields = document.querySelectorAll(DOMstrings.inputDescription + ', ' + DOMstrings.inputValue);
-
       fieldsArr = Array.prototype.slice.call(fields);
-
       fieldsArr.forEach(function(current, index, array) {
         current.value = "";
       });
-
       fieldsArr[0].focus();
     },
 
@@ -109,13 +114,11 @@ var UIController = (function() {
       document.querySelector(DOMstrings.budgetLabel).textContent = formatNumber(obj.budget, type);
       document.querySelector(DOMstrings.incomeLabel).textContent = formatNumber(obj.totalInc, 'inc');
       document.querySelector(DOMstrings.expensesLabel).textContent = formatNumber(obj.totalExp, 'exp');
-
       if (obj.percentage > 0) {
         document.querySelector(DOMstrings.percentageLabel).textContent = obj.percentage + '%';
       } else {
         document.querySelector(DOMstrings.percentageLabel).textContent = '---';
       }
-
     },
 
 
@@ -138,7 +141,6 @@ var UIController = (function() {
       now = new Date();
       months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
       month = now.getMonth();
-
       year = now.getFullYear();
       document.querySelector(DOMstrings.dateLabel).textContent = months[month] + ' ' + year;
     },
@@ -160,7 +162,37 @@ var UIController = (function() {
 
     getDOMstrings: function() {
       return DOMstrings;
-    }
+    },
+
+
+    getALERTstrings: function() {
+      return alertMessages;
+    },
+
+
+    showAlert: function(type, msg) {
+      var alert;
+
+      if (type === alertMessages.error) {
+        alert = document.querySelector(DOMstrings.alertError);
+      } else {
+        alert = document.querySelector(DOMstrings.alertSuccess);
+      }
+      alert.textContent = capitalize(type) + ': ' + msg;
+      alert.style.display = 'block';
+      setTimeout(function() {
+        alert.style.display = 'none';
+      }, 2000);
+    },
+
+    hideAlerts: function() {
+      var al1, al2;
+      al1 = document.querySelector(DOMstrings.alertError);
+      al2 = document.querySelector(DOMstrings.alertSuccess);
+      al1.style.display = 'none';
+      al2.style.display = 'none';
+    },
+
   };
 
 })();

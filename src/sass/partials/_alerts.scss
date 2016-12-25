@@ -1,0 +1,26 @@
+/****************************************
+*** ALERT MSG STUFF
+****************************************/
+
+.alerts {
+  display: flex;
+  justify-content: center;
+  &__msg-error,
+  &__msg-success {
+    margin-top: 10px;
+    max-width: 500px;
+//    width: 100%;
+    border-radius: 8px;
+    color: #fff;
+    padding: 5px 10px;
+    display: none;
+  }
+  &__msg-error {
+    border: 2px solid $expenseRed;
+    background-color: rgba($expenseRed, 0.5);
+  }
+  &__msg-success {
+    border: 2px solid $incomeGreen;
+    background-color: rgba($incomeGreen, 0.5);
+  }
+}

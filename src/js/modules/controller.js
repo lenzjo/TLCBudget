@@ -2,8 +2,11 @@
 // GLOBAL APP CONTROLLER
 var controller = (function(budgetCtrl, UICtrl) {
 
+  var DOM = UICtrl.getDOMstrings();
+  var MSG = UICtrl.getALERTstrings();
+
+
   var setupEventListeners = function() {
-    var DOM = UICtrl.getDOMstrings();
 
     document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAddItem);
 
@@ -55,6 +58,14 @@ var controller = (function(budgetCtrl, UICtrl) {
       updateBudget();
       // 6. Calculate and update percentages
       updatePercentages();
+    } else {
+      if (input.description === "") {
+        UICtrl.showAlert(MSG.error, MSG.missingDescription);
+      } else {
+        if (isNaN(input.value) || input.value < 1) {
+          UICtrl.showAlert(MSG.error, MSG.missingAmount);
+        }
+      }
     }
   };
 
@@ -86,6 +97,7 @@ var controller = (function(budgetCtrl, UICtrl) {
 
     init: function() {
       console.log('Application has started.');
+      UICtrl.hideAlerts();
       UICtrl.displayMonth();
       UICtrl.displayBudget({
       budget: 0,

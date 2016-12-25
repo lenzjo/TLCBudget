@@ -49,7 +49,7 @@ My purpose in doing this is to practise what I have learnt in the course and bec
 
 **Phase 2**: Completed.
 
-**Phase 3**:
+**Phase 3**: Completed: Very DRY ;)one function to display both error and success alerts.
 
 **Phase 4**: 
 
