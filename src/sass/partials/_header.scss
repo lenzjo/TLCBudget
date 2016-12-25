@@ -1,0 +1,63 @@
+/****************************************
+*** HEADER
+****************************************/
+
+.header {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(back.png);
+  background-size: cover;
+  background-position: center;
+}
+
+.budget {
+  color: #fff;
+  &__title {
+    font-size: 1.6em;
+    text-align: center;
+    margin: 10px 0;
+  }
+  &__value {
+    font-size: 3em;
+    text-align: center;
+    letter-spacing: 2px;
+    margin-bottom: 25px;
+  }
+  &__income,
+  &__expenses {
+    text-transform: uppercase;
+    border-radius: 5px;
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    .amounts {
+      display: flex;
+      justify-content: space-between;
+    }
+    &--text {
+      font-size: 1.1em;
+      color: #444;
+      margin-top: 2px;
+    }
+    &--value {
+      letter-spacing: 1px;
+    }
+    &--percentage {
+      font-size: .7em;
+      width: 34px;
+      padding: 3px 0;
+      margin-left: 10px;
+    }
+  }
+  &__income {
+    background-color: $incomeGreen;
+    margin-bottom: 10px;
+  }
+  &__expenses {
+    background-color: $expenseRed;
+    margin-bottom: 20px;
+    &--percentage {
+      background-color: rgba(255, 255, 255, 0.2);
+      text-align: center;
+      border-radius: 3px;
+    }
+  }
+}

@@ -1,0 +1,58 @@
+/****************************************
+*** TRANSACTION CONTROL BAR
+****************************************/
+
+.transaction__control {
+    padding: 14px;
+  border-bottom: 1px solid $inputAccent;
+  background-color: $inputBG;
+  &--container {
+    margin: 0;
+  }
+}
+
+.add {
+  &__type {
+    font-size: 1.2em;
+    background-color: #fff;
+    color: inherit;
+    margin-right: 10px;
+    padding: 0 5px;
+    border-radius: 5px;
+  }
+  &__description {
+    width: 350px;
+  }
+  &__value {
+    width: 60px;
+  }
+  &__description,
+  &__value {
+    border: 1px solid $inputAccent;
+    background-color: #fff;
+    color: inherit;
+    border-radius: 5px;
+    font-family: inherit;
+    padding: 12px 15px;
+    margin-right: 10px;
+  }
+  &__btn {
+    background: none;
+    color: $incomeGreen;
+    border: none;
+    cursor: pointer;
+    font-size: 2.1em;
+    &:active {
+      transform: translate(2px);
+    }
+    &:focus {
+      outline: none;
+    }
+  }
+  &__type,
+  &__description,
+  &__value {
+    outline: none;
+    border: 1px solid $incomeGreen;
+  }
+}
