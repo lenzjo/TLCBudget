@@ -1,11 +1,14 @@
 // BUDGET CONTROLLER
 var budgetController = (function() {
 
-  var Expense = function(id, description, value) {
-    this.id = id;
-    this.description = description;
-    this.value = value;
-    this.percentage = -1;
+  var Expense = function(id, day, month, year, description, value) {
+    this.id           = id;
+    this.day          = day;
+    this.month        = month;
+    this.year         = year;
+    this.description  = description;
+    this.value        = value;
+    this.percentage   = -1;
   };
 
 
@@ -23,10 +26,13 @@ var budgetController = (function() {
   };
 
 
-  var Income = function(id, description, value) {
-    this.id = id;
-    this.description = description;
-    this.value = value;
+  var Income = function(id, day, month, year, description, value) {
+    this.id           = id;
+    this.day          = day;
+    this.month        = month;
+    this.year         = year;
+    this.description  = description;
+    this.value        = value;
   };
 
 
@@ -56,21 +62,20 @@ var budgetController = (function() {
   return {
 
 
-    addItem: function(type, des, val) {
-      var newItem, ID;
-      // Create new ID
-      if (data.allItems[type].length > 0) {
-        ID = data.allItems[type][data.allItems[type].length - 1].id + 1;
-      } else {
-        ID = 0;
-      }
+    addItem: function(id, type, description, value, dateObj) {
+      var newItem, day, month, year;
+
+      day    = dateObj.day;
+      month  = dateObj.month;
+      year   = dateObj.year;
+
       // Create new item based on 'inc' or 'exp' type
       if (type === 'exp') {
-        newItem = new Expense(ID, des, val);
+        newItem = new Expense(id, day, month, year, description, value);
       } else if (type === 'inc') {
-        newItem = new Income(ID, des, val);
+        newItem = new Income(id, day, month, year, description, value);
       }
-      // Push it into our data structure
+      // Add it into our data structure
       data.allItems[type].push(newItem);
       // Return the new element
       return newItem;
@@ -128,6 +133,28 @@ var budgetController = (function() {
         totalExp: data.totals.exp,
         percentage: data.percentage
       };
+    },
+
+    // Create a new ID# for the transaction type
+    createID: function(type) {
+      var ID;
+
+      if (data.allItems[type].length > 0) {
+        ID = data.allItems[type][data.allItems[type].length - 1].id + 1;
+      } else {
+        ID = 0;
+      }
+      return ID;
+    },
+
+
+    clearBudget: function() {
+      data.allItems.exp = [];
+      data.allItems.inc = [];
+      data.totals.exp = 0;
+      data.totals.inc = 0;
+      data.budget = 0;
+      data.percentage = -1;
     },
 
 

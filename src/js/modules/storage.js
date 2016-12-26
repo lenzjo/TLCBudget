@@ -1,6 +1,9 @@
 // FILE STORAGE
 var storageController = (function() {
 
+  var storage_is_available = false;
+
+  // Filename is <owner's name>-<transaction_file_name>
   var transaction_file_name = 'transaction_list';
 
   var Transaction = function(id, type, day, month, year, description, value) {
@@ -14,7 +17,7 @@ var storageController = (function() {
   };
 
 
-  // Load a named list from localStorage
+  // Retrieve all transactions from storage and convert to obj
   var load_object = function(owner) {
     var list = [];
 
@@ -26,7 +29,7 @@ var storageController = (function() {
   };
 
 
-  // Save a named list to localStorage
+  // Convert obj to json and save all transactions to storage
   var save_object = function(owner, list) {
 
     var jsonstr = JSON.stringify(list);
@@ -41,15 +44,25 @@ var storageController = (function() {
       try {
         localStorage.setItem('_', '_');
         localStorage.removeItem('_');
-        return true;
+        storage_is_available = true;
+        return storage_is_available;
       } catch (e) {
-        return false;
+        storage_is_available = false;
+        return storage_is_available;
       }
     },
 
 
+    storage_is_available: function() {
+      return storage_is_available;
+    },
+
+
+    // Save one transaction to storage
     saveItem: function(type, item, owner) {
       var transactionList, newItem;
+
+      if (!storage_is_available) { return;}
 
       transactionList = load_object(owner);
 
@@ -60,8 +73,11 @@ var storageController = (function() {
     },
 
 
+    // Delete one transaction from storage
     deleteItem: function(type, id, owner) {
       var transactionList, newList, index;
+
+      if (!storage_is_available) { return;}
 
       transactionList = load_object(owner);
       newList = transactionList.map(function(current) {
@@ -77,7 +93,10 @@ var storageController = (function() {
     },
 
 
+    // Retrieve all transactions from storage
     loadTransactionsList: function(owner) {
+      if (!storage_is_available) {return [];}
+
       var transactionList = load_object(owner);
       if (transactionList === null) {
         transactionList = [];

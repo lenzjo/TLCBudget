@@ -45,28 +45,23 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl) {
 
 
   var ctrlAddItem = function() {
-    var input, newItem;
+    var input, newItem, ID, todaysDate;
 
     // 1. Get the field input data
     input = UICtrl.getInput();
     if (input.description !== "" && !isNaN(input.value) && input.value > 0) {
+      todaysDate = get_current_date();
+      ID = budgetCtrl.createID(input.type);
       // 2. Add the item to the budget controller
-      newItem = budgetCtrl.addItem(input.type, input.description, input.value);
+      newItem = budgetCtrl.addItem(ID, input.type, input.description, input.value, todaysDate);
       // 3. Add the item to the UI
-      UICtrl.addListItem(newItem, input.type);
-      // 4. Clear the fields
-      UICtrl.clearFields();
-      // 5. Calculate and update budget
-      updateBudget();
-      // 6. Calculate and update percentages
-      updatePercentages();
+      update_budget_UI(newItem, input.type);
+      // 4. Save the transaction to storage
+      storeCtrl.saveItem(input.type, newItem, user);
     } else {
+      // 5. Show any errors
       if (input.description === "") {
         UICtrl.showAlert(MSG.error, MSG.missingDescription);
-      } else {
-        if (isNaN(input.value) || input.value < 1) {
-          UICtrl.showAlert(MSG.error, MSG.missingAmount);
-        }
       }
     }
   };
@@ -90,7 +85,71 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl) {
       updateBudget();
       // 4. Calculate and update percentages
       updatePercentages();
+      // 5. Delete the item from storage
+      storeCtrl.deleteItem(type, ID, user);
     }
+  };
+
+
+  // Return current date
+  var get_current_date = function() {
+    var dobj, day, month, year;
+
+    dobj  = new Date();
+    day   = dobj.getDate();
+    month = dobj.getMonth();
+    year  = dobj.getFullYear();
+    var x = "" + year;
+    year  = parseInt(x.slice(-2));
+
+    return {
+      day: day,
+      month: month,
+      year: year
+    };
+  };
+
+
+  var update_budget_UI = function(item, type) {
+    // 1. Update UI
+    UICtrl.addListItem(item, type);
+    // 2. Clear the fields
+    UICtrl.clearFields();
+    // 3. Calculate and update budget
+    updateBudget();
+    // 4. Calculate and update percentages
+    updatePercentages();
+  };
+
+
+  var load_all_transactions = function(owner) {
+    var transList, todaysDate, newItem, idx;
+
+    if (!storeCtrl.storage_is_available) { return; }
+
+    // Load transactions list
+    transList = storeCtrl.loadTransactionsList(owner);
+    // Are there any transactions?
+    if (transList.length > 0) {
+      //  1. Clear budget & display
+      budgetCtrl.clearBudget();
+      UICtrl.clearBudgetDisplay();
+      // 2. Add each transaction to the budget & update the UI
+      for (idx = 0; idx < transList.length; idx++) {
+        // 2a. Get the transaction's date
+        todaysDate = {
+          day:    transList[idx].day,
+          month:  transList[idx].month,
+          year:    transList[idx].year
+        };
+        // 2b. Add transaction to the budget
+        newItem = budgetCtrl.addItem(transList[idx].id, transList[idx].type, transList[idx].description, transList[idx].value, todaysDate);
+        // 2c. Update UI
+        update_budget_UI(transList[idx], transList[idx].type);
+      }
+    }
+
+
   };
 
 
@@ -105,6 +164,7 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl) {
         console.log('File System: Unavailable.');
       }
       UICtrl.clearBudgetDisplay();
+      load_all_transactions(user);
 
       setupEventListeners();
     }

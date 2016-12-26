@@ -9,14 +9,20 @@ This is my **second** version of the final project in The complete JavaScript co
 
 My purpose in doing this is to practise what I have learnt in the course and become more proficient in JavaScript.
 
-## Usage ##
+## Compilation ##
 
-**Requirements**: Node and Gulp should be installed globally.
+**Requirements**: [**Node**](https://nodejs.org/) and then **Gulp** should be installed globally.
 
 1. Either download the .zip or clone it somewhere.
 1. Open your Terminal/Command line inside the `TLCBudget` directory and type `npm install`.
 2. Type `gulp` to compile and create the `public` directory.
 3. Type `gulp watch` and browserSync will open a browser window and show you the result.
+
+## Usage ##
+
+If you want to use this app, go thru the **compilation** process above and then copy the build directory to wherever is good for you. You can then just double-click on the **index.html** file to start it up.
+
+This app was created on a windows 7 PC and using the Chrome browser. It has NOT been tested on any other combination of OS/browser/computer, so YMMV if you use any other combination ;)
 
 
 
@@ -37,7 +43,7 @@ My purpose in doing this is to practise what I have learnt in the course and bec
 
 **Phase 4**: Add load and save functionality.
 
-**Phase 5**: Add multi-user capability, so the whole family can have their own individual budget plans ;)
+**Phase 5**: Add multi-user capability, so the whole family can have their own individual budget plans ;) To accomplish this login/register etc. dialogs/pages will need to be added.
 
 **Phase 6**: Allow a user to have multiple budgets. (Dunno about this one yet..).
 
@@ -49,9 +55,9 @@ My purpose in doing this is to practise what I have learnt in the course and bec
 
 **Phase 2**: Completed.
 
-**Phase 3**: Completed: Very DRY ;)one function to display both error and success alerts.
+**Phase 3**: Completed: Very DRY ;) one function to display both error and success alerts.
 
-**Phase 4**: 
+**Phase 4**: Completed. I use localStorage but as all the load/save functionality is in a module, the module's functions could be re-written to use other forms of storage.
 
 **Phase 5**: 
 

@@ -25,6 +25,7 @@ var UIController = (function() {
   var alertMessages = {
     error:              'error',
     success:            'success',
+
     missingDescription: 'Missing Description.',
     missingAmount:      'Missing Amount',
   };
@@ -55,6 +56,18 @@ var UIController = (function() {
 
   var capitalize = function(string) {
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+  };
+
+
+  var format_date = function(day, month, year) {
+    var dateStr = '';
+
+    if (day < 10) { day = '0' + day; }
+    month++;
+    if (month < 10) {month = '0' + month; }
+    dateStr = day + '/' + month + '/' + year;
+
+    return dateStr;
   };
 
 
