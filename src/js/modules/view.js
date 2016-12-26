@@ -185,13 +185,17 @@ var UIController = (function() {
       }, 2000);
     },
 
-    hideAlerts: function() {
-      var al1, al2;
-      al1 = document.querySelector(DOMstrings.alertError);
-      al2 = document.querySelector(DOMstrings.alertSuccess);
-      al1.style.display = 'none';
-      al2.style.display = 'none';
+
+    clearBudgetDisplay: function() {
+      this.displayMonth();
+      this.displayBudget({
+        budget: 0,
+        totalInc: 0,
+        totalExp: 0,
+        percentage: -1
+      });
     },
+
 
   };
 

@@ -1,9 +1,11 @@
 
 // GLOBAL APP CONTROLLER
-var controller = (function(budgetCtrl, UICtrl) {
+var controller = (function(budgetCtrl, UICtrl, storeCtrl) {
 
   var DOM = UICtrl.getDOMstrings();
   var MSG = UICtrl.getALERTstrings();
+
+  var user = 'clive';    // For temp. use while bulding filesystem.
 
 
   var setupEventListeners = function() {
@@ -96,18 +98,17 @@ var controller = (function(budgetCtrl, UICtrl) {
 
 
     init: function() {
-      console.log('Application has started.');
-      UICtrl.hideAlerts();
-      UICtrl.displayMonth();
-      UICtrl.displayBudget({
-      budget: 0,
-      totalInc: 0,
-      totalExp: 0,
-      percentage: -1
-      });
+      console.log('Application: Started.');
+      if (storeCtrl.supportsLocalStorage()) {
+        console.log('File System: Available.');
+      } else {
+        console.log('File System: Unavailable.');
+      }
+      UICtrl.clearBudgetDisplay();
+
       setupEventListeners();
     }
   };
 
 
-})(budgetController, UIController);
+})(budgetController, UIController, storageController);
