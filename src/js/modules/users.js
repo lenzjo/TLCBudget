@@ -1,1 +1,5 @@
-// USERS
+// USERS CONTROLLER
+var usersController = (function() {
+
+
+})();
