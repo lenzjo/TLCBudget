@@ -1,11 +1,12 @@
 
 // GLOBAL APP CONTROLLER
-var controller = (function(budgetCtrl, UICtrl, storeCtrl) {
+var controller = (function(budgetCtrl, UICtrl, storeCtrl, userCtrl) {
 
   var DOM = UICtrl.getDOMstrings();
   var MSG = UICtrl.getALERTstrings();
+  var SCR = UICtrl.getSCRstrings();
 
-  var user = 'clive';    // For temp. use while bulding filesystem.
+  var contentDIV = document.querySelector(DOM.content_div);
 
 
   var setupEventListeners = function() {
@@ -14,13 +15,154 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl) {
 
     document.addEventListener('keypress', function(event) {
       if (event.keyCode === 13 || event.which === 13) {
-        ctrlAddItem();
+        enterKeyHandler();
       }
     });
 
-    document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem);
+    // Menu event handler
+    document.querySelector(DOM.menubar).addEventListener('click', menu_handler);
+
+
+    document.querySelector(DOM.container).addEventListener('click', findClickSource);
 
     document.querySelector(DOM.inputType).addEventListener('change', UICtrl.changedType);
+  };
+
+
+  var menu_handler = function(event) {
+    var menuID;
+
+    menuID = event.target.id;
+    switch(menuID) {
+
+      case DOM.menuLogin:
+        console.log('You want to login');
+        UICtrl.showLoginPage(contentDIV);
+        break;
+
+      case DOM.menuLogout:
+        console.log('You want to logout');
+        UICtrl.showLoginPage(contentDIV);
+        break;
+
+      case DOM.menuRegister:
+        console.log('You want to register');
+        UICtrl.showRegisterPage(contentDIV);
+        break;
+
+      default:
+        break;
+    }
+  };
+
+
+  // Find which 'screen' the CR key was pressed on
+  var enterKeyHandler = function() {
+    var curr_screen;
+
+    curr_screen = UICtrl.getCurrentScreen();
+console.log(curr_screen);
+    switch(curr_screen) {
+
+      case SCR.login_scr:
+        loginSubmit();
+        break;
+
+      case SCR.register_scr:
+        registerSubmit();
+        break;
+
+      case SCR.transactions_scr:
+        ctrlAddItem();
+        break;
+
+      case SCR.lost_password:
+        lostPasswordSubmit();
+        break;
+
+      default:
+        break;
+    }
+  };
+
+
+  // Find the ID clicked on in the contentDIV
+  var findClickSource = function(event) {
+    var eventID, validUser, entries;
+
+    event.preventDefault();
+    eventID = event.target.id;
+
+    if (eventID === DOM.transDeleteBtn) {  // Is it a transaction DEL btn?
+      ctrlDeleteItem(event);
+    } else {
+      switch(eventID) {
+
+        case DOM.login_submit_btn:
+          loginSubmit();
+          break;
+
+        case DOM.register_submit_btn:
+          registerSubmit();
+          break;
+
+        case DOM.lost_password_submit_btn:
+          lostPasswordSubmit();
+          break;
+
+        case DOM.login_link:
+          UICtrl.showLoginPage(contentDIV);
+          break;
+
+        case DOM.register_link:
+          UICtrl.showRegisterPage(contentDIV);
+          break;
+
+        case DOM.lost_password_link:
+          UICtrl.showLostPasswordPage(contentDIV);
+          break;
+
+        default:
+          break;
+      }
+    }
+  };
+
+  // Login Submit btn pressed
+  var loginSubmit = function() {
+    var entries, validUser;
+
+    entries   = UICtrl.getLoginFieldData();
+    validUser = userCtrl.verifyUser(entries);
+    if (validUser !== null) {
+      UICtrl.showTransactionsPage(contentDIV);
+    }
+  };
+
+
+  // Register Submit btn pressed
+  var registerSubmit = function() {
+    var entries;
+    entries = UICtrl.getRegisterFieldData();
+    // Found the username?
+    if (userCtrl.find_username(entries) !== null) {
+      UICtrl.showAlert(MSG.error, MSG.usernamePresent);
+    // Found the password?
+    } else if (userCtrl.find_password(entries) !== null) {
+      UICtrl.showAlert(MSG.error, MSG.userPWinUse);
+    // Neither so go and create & save the new use.
+    } else {
+      if (userCtrl.createUser(entries !== null)) {
+        UICtrl.showAlert(MSG.success, MSG.registered);
+      } else {
+        UICtrl.showAlert(MSG.error, MSG.entryError);
+      }
+    }
+  };
+
+  // Lost password submit btn pressed
+  var lostPasswordSubmit = function() {
+
   };
 
 
@@ -157,18 +299,26 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl) {
 
 
     init: function() {
+      var userCount = 0;
+
       console.log('Application: Started.');
       if (storeCtrl.supportsLocalStorage()) {
         console.log('File System: Available.');
+        userCount = userCtrl.getUsers(true);
       } else {
         console.log('File System: Unavailable.');
       }
       UICtrl.clearBudgetDisplay();
-      load_all_transactions(user);
 
       setupEventListeners();
+
+      if (userCount > 0) {
+        UICtrl.showLoginPage(contentDIV);
+      } else {
+        UICtrl.showRegisterPage(contentDIV);
+      }
     }
   };
 
 
-})(budgetController, UIController, storageController);
+})(budgetController, UIController, storageController, usersController);

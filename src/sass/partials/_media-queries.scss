@@ -7,6 +7,7 @@
 
 // sm Breakpoint - approx Tablet size
 @media (min-width: 530px) {
+  @include menu--sm();
   @include budget--sm();
   @include transCtrl--sm();
   @include transDisp--sm();
@@ -15,6 +16,7 @@
 
 // md Breakpoint - approx Medium Desktop size
 @media (min-width: 800px) {
+  @include menu--md();
   @include budget--md();
   @include transCtrl--md();
   @include transDisp--md();
@@ -23,6 +25,7 @@
 
 // lg Breakpoint - Approx Large Desktop size
 @media (min-width: 1200px) {
+  @include menu--lg();
   @include budget--lg();
   @include transCtrl--lg();
   @include transDisp--lg();
