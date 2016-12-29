@@ -75,6 +75,7 @@ var usersController = (function() {
 
   return {
 
+
     // Get a count of users and optionally show their names
     getUsers: function(show) {
       var userCount, userList, person, idx;
@@ -216,17 +217,19 @@ var usersController = (function() {
     },
 
 
-    // Return the currently loggedin username
+    // Return the currently logged-in username
     getCurrentUser: function() {
       return current_user;
     },
+
 
     // Set the current user
     setCurrentUser: function(username) {
       current_user = username;
     },
 
-    // Get default user
+
+    // Get default user - Nobody !!
     getDefaultUser: function() {
       return default_user;
     },

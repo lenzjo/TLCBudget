@@ -20,8 +20,10 @@ var UIController = (function() {
 
     item_date:                '.item__date',
 
-    alertError:               '.alerts__msg-error',
-    alertSuccess:             '.alerts__msg-success',
+    errorAlert:               'errorAlert',
+    successAlert:             'successAlert',
+    alertErrorDIV:            '.alertErrorDiv',
+    alertSuccessDIV:          '.alertSuccessDiv',
 
     menubar:                  '.menubar',
     menuLogin:                'menu__login--link',
@@ -131,18 +133,6 @@ var UIController = (function() {
     var dateStr = '';
 
     if (day < 10) { day = '0' + day; }
-    month++;
-    if (month < 10) {month = '0' + month; }
-    dateStr = day + '/' + month + '/' + year;
-
-    return dateStr;
-  };
-
-
-  var formatDate = function(day, month, year) {
-    var dateStr = '';
-
-    if (day < 10) { day = '0' + day; }
     month++;                              // mths are 0-11 so add 1
     if (month < 10) {month = '0' + month; }
 
@@ -221,13 +211,71 @@ var UIController = (function() {
 
 
   var iniz_update_password_form = function() {
-    document.getElementById(DOMstrings.password_field).value = '';
-    var input = document.getElementById(DOMstrings.confirm_password_field);
+    document.getElementById(DOMstrings.confirm_password_field).value = '';
+    var input = document.getElementById(DOMstrings.password_field);
     input.value = '';
     input.focus();
     current_screen = screens.update_password_scr;
   };
 
+//=======================  ALERT STUFF  =====================================
+
+  var alert_toggle = function(alert) {
+    var alertDOM;
+
+    alertDOM = document.getElementById(alert);
+    alertDOM.classList.toggle('showAlert');
+  };
+
+
+  var get_alert_height = function(alertDiv) {
+    var alertDiv_style       = window.getComputedStyle(alertDiv);
+    var alertDiv_display     = alertDiv_style.display;
+    var alertDiv_position    = alertDiv_style.position;
+    var alertDiv_visibility  = alertDiv_style.visibility;
+    var alertDiv_max_hgt     = alertDiv_style.maxHeight.replace('px', '').replace('%', '');
+    var wanted_hgt           = 0;
+
+    if (alertDiv_display != 'none' && alertDiv_max_hgt !== '0') {
+      return alertDiv.offsetHeight;
+    }
+
+    alertDiv.style.position   = 'absolute';
+    alertDiv.style.visibility = 'hidden';
+    alertDiv.style.display    = 'block';
+
+    wanted_hgt = alertDiv.offsetHeight;
+
+    alertDiv.style.position   = alertDiv_position;
+    alertDiv.style.visibility = alertDiv_visibility;
+    alertDiv.style.display    = alertDiv_display;
+
+    return wanted_hgt;
+  };
+
+
+  var toggle_vertical_slide = function(alertDiv) {
+    var alertDiv_max_hgt = 0;
+
+    if (alertDiv.getAttribute('data-max-height')) {
+      if (alertDiv.style.maxHeight.replace('px','').replace('%', '') === '0') {
+        alertDiv.style.maxHeight = alertDiv.getAttribute('data-max-height');
+      } else {
+        alertDiv.style.maxHeight = '0';
+      }
+    } else {
+      alertDiv_max_hgt              = get_alert_height(alertDiv) + 'px';
+      alertDiv.style.transition  = 'max-height 0.5s ease-in-out';
+      alertDiv.style.overflowY      = 'hidden';
+      alertDiv.style.maxHeight      = '0';
+      alertDiv.setAttribute('data-max-height', alertDiv_max_hgt);
+      alertDiv.style.display        = 'block';
+
+      setTimeout(function() {
+        alertDiv.style.maxHeight = alertDiv_max_hgt;
+      }, 10);
+    }
+  };
 
 
   return {
@@ -254,7 +302,7 @@ var UIController = (function() {
         html = '<div class="item" id="exp-%id%"><div class="item__blk"><div class="item__date" >%trans_date%</div><div class="item__description">%description%</div></div><div class="amount"><div class="item__value">%value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline" id="trans_del_btn"></i></button></div></div></div>';
       }
       // Convert d,m,y to a string dd/mm/yy
-      dateStr = formatDate(obj.day, obj.month, obj.year);
+      dateStr = format_date(obj.day, obj.month, obj.year);
       // Replace the placeholder text with some actual data
       newHtml = html.replace('%id%', obj.id);
       newHtml = newHtml.replace('%trans_date%', dateStr + ': ');
@@ -351,35 +399,41 @@ var UIController = (function() {
 
 
     showAlert: function(type, msg, loc) {
-      var alert, nonAlert, errAlert, sucAlert, errLoc, bgColor;
+      var alert, alertDIV, errLoc, bgColor;
 
-      errAlert = document.querySelector(DOMstrings.alertError);
-      sucAlert = document.querySelector(DOMstrings.alertSuccess);
+      // Set which Alert to show
+      if (type === alertMessages.error) {
+        alert = DOMstrings.errorAlert;
+        alertDIV = DOMstrings.alertErrorDIV;
+      } else {
+        alert = DOMstrings.successAlert;
+        alertDIV = DOMstrings.alertSuccessDIV;
+      }
+      // Get option field location
       if (loc !== null) {
         errLoc = document.querySelector(loc);
       }
-      if (type === alertMessages.error) {
-        alert = errAlert;
-        nonAlert = sucAlert;
-      } else {
-        alert = sucAlert;
-        nonAlert = errAlert;
-      }
-      alert.textContent        = capitalize(type) + ': ' + msg;
+
+      // Set text content of Alert
+      document.querySelector('#' + alert).textContent = capitalize(type) + ': ' + msg;
+
+      // Set BG of optional field
       if (loc !== null) {
         bgColor = getPropertyValue(loc, 'backgroundColor');
         errLoc.style.backgroundColor = '#fcc';
       }
-      alert.style.display      = 'block';
-      nonAlert.style.display   = 'none';
-      setTimeout(function() {
-        alert.style.display    = 'none';
-        if (loc !== null) {
-          errLoc.style.backgroundColor = bgColor;
-          errLoc.focus();
-        }
+      // Do Alert show anim
+      toggle_vertical_slide(document.querySelector(alertDIV));
+      alert_toggle(alert);
 
-      }, 2000);
+      // Then wait and then reverse everything
+      setTimeout(function() {
+        toggle_vertical_slide(document.querySelector(alertDIV));
+        alert_toggle(alert);
+        errLoc.style.backgroundColor = bgColor;  // Restore BG color of field
+        errLoc.focus();                          // and put the cursor in it.
+      }, 1500);
+
     },
 
 

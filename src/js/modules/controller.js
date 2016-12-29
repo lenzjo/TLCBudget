@@ -16,13 +16,13 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl, userCtrl) {
     // Find the 'screen' where the CR was pressed
     document.addEventListener('keypress', function(event) {
       if (event.keyCode === 13 || event.which === 13) {
-        enterKeyHandler();
+        enter_key_handler();
       }
     });
     // Menu event handler
     document.querySelector(DOM.menubar).addEventListener('click', menu_handler);
     // Get source of mouse-clicks in the content_div
-    contentDIV.addEventListener('click', findClickSource);
+    contentDIV.addEventListener('click', find_click_source);
     // React to inputType changes
     document.querySelector(DOM.inputType).addEventListener('change', UICtrl.changedType);
   };
@@ -39,24 +39,24 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl, userCtrl) {
 
       case DOM.menuLogin:
         console.log('You want to login');
-        displayLoginPage();
+        display_login_page();
         break;
 
       case DOM.menuLogout:
         console.log('You want to logout');
         userCtrl.setCurrentUser(userCtrl.getDefaultUser());
         budgetCtrl.clearBudget();
-        displayLoginPage();
+        display_login_page();
         break;
 
       case DOM.menuRegister:
         console.log('You want to register');
-        displayRegistrationPage();
+        display_registration_page();
         break;
 
       case DOM.menuShowDate:
         console.log('You want to access Date display toggle');
-        toggleItemDateDisplay();
+        toggle_item_date_display();
         break;
 
       default:
@@ -66,18 +66,18 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl, userCtrl) {
 
 
   // Find which 'screen' the CR key was pressed on
-  var enterKeyHandler = function() {
+  var enter_key_handler = function() {
     var curr_screen;
 
     curr_screen = UICtrl.getCurrentScreen();
     switch(curr_screen) {
 
       case SCR.login_scr:
-        loginSubmit();
+//        login_submit();
         break;
 
       case SCR.register_scr:
-        registerSubmit();
+//        register_submit();
         break;
 
       case SCR.transactions_scr:
@@ -85,11 +85,11 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl, userCtrl) {
         break;
 
       case SCR.lost_password_scr:
-        lostPasswordSubmit();
+//        lost_password_submit();
         break;
 
       case SCR.update_password_scr:
-        updatePasswordSubmit();
+//        update_password_submit();
         break;
 
       default:
@@ -99,7 +99,7 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl, userCtrl) {
 
 
   // Find the ID clicked on in the contentDIV
-  var findClickSource = function(event) {
+  var find_click_source = function(event) {
     var eventID;
 
     event.preventDefault();
@@ -107,31 +107,31 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl, userCtrl) {
     switch(eventID) {
 
       case DOM.login_submit_btn:
-        loginSubmit();
+        login_submit();
         break;
 
       case DOM.register_submit_btn:
-        registerSubmit();
+        register_submit();
         break;
 
       case DOM.lost_password_submit_btn:
-        lostPasswordSubmit();
+        lost_password_submit();
         break;
 
       case DOM.update_passwd_submit_btn:
-        updatePasswordSubmit();
+        update_password_submit();
         break;
 
       case DOM.login_link:
-        displayLoginPage();
+        display_login_page();
         break;
 
       case DOM.register_link:
-        displayRegistrationPage();
+        display_registration_page();
         break;
 
       case DOM.lost_password_link:
-        displayLostPasswordPage();
+        display_lost_password_page();
         break;
 
       case DOM.trans_delete_btn:
@@ -147,7 +147,7 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl, userCtrl) {
 //=====================  EVENT HANDLERS  ============================
 
   // Login Submit btn pressed
-  var loginSubmit = function() {
+  var login_submit = function() {
     var entries, username, password, validUser;
 
     entries   = UICtrl.getLoginFieldData();
@@ -164,7 +164,7 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl, userCtrl) {
     validUser = userCtrl.verifyUser(entries);
     if (validUser !== null) {
       userCtrl.setCurrentUser(validUser.username);
-      displayTransactionsPage();
+      display_transaction_page();
     } else {
       UICtrl.showAlert(MSG.error, MSG.unknownUser, null);
     }
@@ -172,7 +172,7 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl, userCtrl) {
 
 
   // Register Submit btn pressed
-  var registerSubmit = function() {
+  var register_submit = function() {
     var entries, username, email, password, conpassword;
 
     entries = UICtrl.getRegisterFieldData();
@@ -219,7 +219,7 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl, userCtrl) {
 
 
   // Lost password submit btn pressed
-  var lostPasswordSubmit = function() {
+  var lost_password_submit = function() {
     var entries, username, email, user;
 
     entries = UICtrl.getLostPasswordFieldData();
@@ -243,12 +243,12 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl, userCtrl) {
     }
     // Yes, so show password update modal
     TempUser = user;
-    displayUpdatePasswordPage();
+    display_update_password_page();
   };
 
 
   // Update Password Submit btn pressed
-  var updatePasswordSubmit = function() {
+  var update_password_submit = function() {
     var entries, password, conpassword, person, updated;
 
     entries = UICtrl.getUpdatePasswordFieldData();
@@ -276,11 +276,11 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl, userCtrl) {
     if (updated) {
       // 4a. Success - Change to Login Page
       UICtrl.showAlert(MSG.success, MSG.updateUserSuccess);
-      displayLoginPage();
+      display_login_page();
     } else {
       // 4b. Failure - Change to Lost Password Page
       UICtrl.showAlert(MSG.error, MSG.updateUserFail, null);
-      displayLostPasswordPage();
+      display_lost_password_page();
     }
   };
 
@@ -291,7 +291,7 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl, userCtrl) {
 //=====================  PAGE DISPLAY  ============================
 
 
-  var displayTransactionsPage = function() {
+  var display_transaction_page = function() {
     var i, user, transList, transaction, todayDate, newItem;
 
     // 1. Show Transactions page
@@ -324,16 +324,16 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl, userCtrl) {
   };
 
 
-  var displayLoginPage = function() {
+  var display_login_page = function() {
     UICtrl.showLoginPage(contentDIV);
     UICtrl.hideMenuShowDate();
     UICtrl.showMenuLogin();
     UICtrl.showMenuRegister();
-    clearBudgetDisplay();
+    clear_budget_display();
   };
 
 
-  var displayRegistrationPage = function() {
+  var display_registration_page = function() {
     UICtrl.showRegisterPage(contentDIV);
     UICtrl.showMenuLogin();
     UICtrl.hideMenuShowDate();
@@ -341,12 +341,12 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl, userCtrl) {
   };
 
 
-  var displayLostPasswordPage = function() {
+  var display_lost_password_page = function() {
     UICtrl.showLostPasswordPage(contentDIV);
   };
 
 
-  var displayUpdatePasswordPage = function() {
+  var display_update_password_page = function() {
     UICtrl.showUpdatePasswordPage(contentDIV);
   };
 
@@ -354,7 +354,7 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl, userCtrl) {
 
 
 
-  var clearBudgetDisplay = function() {
+  var clear_budget_display = function() {
 
       UICtrl.displayMonth();
       UICtrl.displayUser(userCtrl.getCurrentUser());
@@ -392,7 +392,7 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl, userCtrl) {
 
     // 1. Get the field input data
     input = UICtrl.getInput();
-    if (input.description !== "" && !isNaN(input.value) && input.value > 0) {
+    if (input.description !== "" && input.value > 0) {
       todaysDate = get_current_date();
       ID = budgetCtrl.createID(input.type);
       // 2. Add the item to the budget controller
@@ -405,6 +405,8 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl, userCtrl) {
       // 5. Show any errors
       if (input.description === "") {
         UICtrl.showAlert(MSG.error, MSG.missingDescription, DOM.inputDescription);
+      } else if (isNaN(input.value)) {
+        UICtrl.showAlert(MSG.error, MSG.missingAmount, DOM.inputValue);
       }
     }
   };
@@ -465,37 +467,8 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl, userCtrl) {
   };
 
 
-  var load_all_transactions = function(owner) {
-    var transList, todaysDate, newItem, idx;
 
-    if (!storeCtrl.storage_is_available) { return; }
-
-    // Load transactions list
-    transList = storeCtrl.loadTransactionsList(owner);
-    // Are there any transactions?
-    if (transList.length > 0) {
-      //  1. Clear budget & display
-      budgetCtrl.clearBudget();
-      UICtrl.clearBudgetDisplay();
-      // 2. Add each transaction to the budget & update the UI
-      for (idx = 0; idx < transList.length; idx++) {
-        // 2a. Get the transaction's date
-        todaysDate = {
-          day:    transList[idx].day,
-          month:  transList[idx].month,
-          year:    transList[idx].year
-        };
-        // 2b. Add transaction to the budget
-        newItem = budgetCtrl.addItem(transList[idx].id, transList[idx].type, transList[idx].description, transList[idx].value, todaysDate);
-        // 2c. Update UI
-        update_budget_UI(transList[idx], transList[idx].type);
-      }
-    }
-
-
-  };
-
-  var toggleItemDateDisplay = function() {
+  var toggle_item_date_display = function() {
     UICtrl.toggleDateDisplay();
   };
 
@@ -513,14 +486,14 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl, userCtrl) {
       } else {
         console.log('File System: Unavailable.');
       }
-      clearBudgetDisplay();
+      clear_budget_display();
 
       setupEventListeners();
 
       if (userCount > 0) {
-        displayLoginPage();
+        display_login_page();
       } else {
-        displayRegistrationPage();
+        display_registration_page();
       }
     }
   };

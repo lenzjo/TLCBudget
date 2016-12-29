@@ -39,6 +39,7 @@ var storageController = (function() {
 
   return {
 
+
     // Does system suport localStorage?
     supportsLocalStorage: function() {
       try {
@@ -47,14 +48,10 @@ var storageController = (function() {
         storage_is_available = true;
         return storage_is_available;
       } catch (e) {
+
         storage_is_available = false;
         return storage_is_available;
       }
-    },
-
-
-    storage_is_available: function() {
-      return storage_is_available;
     },
 
 

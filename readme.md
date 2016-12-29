@@ -59,11 +59,13 @@ This app was created on a windows 7 PC and using the Chrome browser. It has NOT 
 
 **Phase 4**: Completed. I used localStorage but as all the load/save functionality is in a module, the module's functions could be re-written to use other forms of storage.
 
-**Phase 5**: Completed.This was harder than what I thought it was going to be. To have multiple users we need some way of letting the user register and then log in. The system had to be able to save and load the data for that user only. 
+**Phase 5**: Completed.This was harder than what I thought it was going to be. To have multiple users we need some way of letting the user register and then log in. The system had to be able to save and load the data for that user only. User details are stored in localStorage.
 
-For the login/register etc. forms I used the content area and ajax'ed the html form partials into it. Making this an SPA :) If you are on any of the 'form pages', pressing the enter key will be the same as submitting the form. When you start the JSBudget, if there are any registered users it will display the login form, otherwise it will show the register form. 
+For the login/register etc. forms I used the content area and ajax'ed the html form partials into it. Making this an SPA :) When you start the JSBudget, if there are any registered users it will display the login form, otherwise it will show the register form. 
 
 Of course I had to show the user his/her name and give 'em a **menu** so they could logout when they are finished. I thought it might be nice to see each transaction's date so I add that in. It can be toggled on/off from the menu. Another little touch is that whenever a new 'page' is shown the cursor is put in the first available field.
+
+Error reporting has been tarted-up :) When you make an error, an error message will apppear and the erroneous field will be highlighted. When the error message goes away the field will be restored and the cursor will be placed in it.
 
 
 **Phase 6**: 

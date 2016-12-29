@@ -2,18 +2,23 @@
 *** ALERT MSG STUFF
 ****************************************/
 
+.alertErrorDiv,
+.alertSuccessDiv {
+  display: none;
+  text-align: center;
+}
+
 .alerts {
-  display: flex;
-  justify-content: center;
   &__msg-error,
   &__msg-success {
     margin-top: 10px;
     max-width: 500px;
-//    width: 100%;
     border-radius: 8px;
     color: #fff;
     padding: 5px 10px;
-    display: none;
+    margin: 10px auto;
+//    opacity: 0;
+//    transform: scale(0);
     transition: all .4s ease-in-out;
   }
   &__msg-error {
@@ -24,4 +29,9 @@
     border: 2px solid $incomeGreen;
     background-color: rgba($incomeGreen, 0.5);
   }
+}
+
+.showAlert {
+  opacity: 1;
+  transform: scale(1);
 }
