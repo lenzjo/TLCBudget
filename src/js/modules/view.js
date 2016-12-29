@@ -13,22 +13,27 @@ var UIController = (function() {
     incomeLabel:              '.budget__income--value',
     expensesLabel:            '.budget__expenses--value',
     percentageLabel:          '.budget__expenses--percentage',
-    container:                '.transactions',
+    content_div:              '.content_area',
     expensesPercLabel:        '.item__percentage',
     dateLabel:                '.budget__title--month',
+    userLabel:                '.budget__title--user',
+
+    item_date:                '.item__date',
 
     alertError:               '.alerts__msg-error',
     alertSuccess:             '.alerts__msg-success',
 
-    menubar:                  '.menu',
+    menubar:                  '.menubar',
     menuLogin:                'menu__login--link',
-    menuLoginLink:            '#menu__login--link',
     menuLogout:               'menu__logout--link',
-    menuLogoutLink:           '#menu__logout--link',
     menuRegister:             'menu__register--link',
-    menuRegisterLink:         '#menu__register--link',
+    menuShowDate:             'menu__show_date--link',
+    menuDateStatus:           '.menu__date',
 
-    content_div:              '.transactions',
+    menuLoginLink:            '#menu__login--link',
+    menuLogoutLink:           '#menu__logout--link',
+    menuRegisterLink:         '#menu__register--link',
+    menuShowDateLink:         '#menu__show_date--link',
 
     username_field:           'username',
     password_field:           'password',
@@ -38,11 +43,13 @@ var UIController = (function() {
     trans_delete_btn:         'trans_del_btn',
     login_submit_btn:         'login_submit_btn',
     register_submit_btn:      'register_submit_btn',
-    lost_password_submit_btn:  'lost_password_submit_btn',
+    lost_password_submit_btn: 'lost_password_submit_btn',
+    update_passwd_submit_btn: 'update_password_submit_btn',
 
     login_link:               'login_link',
     register_link:            'register_link',
     lost_password_link:       'lost_password_link',
+
   };
 
 
@@ -50,29 +57,40 @@ var UIController = (function() {
     error:              'error',
     success:            'success',
 
-    missingDescription: 'Missing Description.',
-    missingAmount:      'Missing Amount',
+    missingDescription: 'You need to give a short Description.',
+    missingAmount:      'How much was the Transaction?',
+    missingUsername:    'What is your username?',
+    missingPassword:    'Please enter your password.',
+    missingEmail:       'Please enter your email address.',
     usernamePresent:    'Username is already in use.',
+    emailPresent:       'Email is already in use.',
+    passwordPresent:    'You cannot use that password.',
+    passwordMismatch:   'The password entries do not match.',
+    unknownUser:        'That username and password combo does not exist on the system.',
     userPWinUse:        'Username and password combination already in use.',
     entryError:         'Bad input... Try again.',
     registered:         'You have successfully registered, go login.',
+    updateUserFail:     'Could not save new password, please re-register',
+    updateUserSuccess:  'Successfully updated Password.',
   };
 
 
   var screens = {
-    transactions_scr:   'transaction_scr',
-    login_scr:          'login_scr',
-    register_scr:       'register_scr',
-    lost_password:      'lost_password',
+    transactions_scr:     'transaction_scr',
+    login_scr:            'login_scr',
+    register_scr:         'register_scr',
+    lost_password_scr:    'lost_password',
+    update_password_scr:  'update_password',
   };
 
   var current_screen = '';
 
   var pages = {
-    transaction_page:   '/pages/transactions.html',
-    login_page:         '/pages/login.html',
-    register_page:      '/pages/register.html',
-    lost_password_page: '/pages/lost_password.html',
+    transaction_page:     '/pages/transactions.html',
+    login_page:           '/pages/login.html',
+    register_page:        '/pages/register.html',
+    lost_password_page:   '/pages/lost_password.html',
+    update_password_page: '/pages/update_password.html',
   };
 
 
@@ -116,6 +134,18 @@ var UIController = (function() {
   };
 
 
+  var formatDate = function(day, month, year) {
+    var dateStr = '';
+
+    if (day < 10) { day = '0' + day; }
+    month++;                              // mths are 0-11 so add 1
+    if (month < 10) {month = '0' + month; }
+
+    dateStr = day + '/' + month + '/' + year;
+    return dateStr;
+  };
+
+
   //===========  'PRIVATE' PAGE RELATED FUNCTIONS ============================
 
   // Change the contents of a div on the index page
@@ -141,7 +171,6 @@ var UIController = (function() {
       current.value = '';
     });
     fieldsArr[0].focus();
-    current_screen = screens.transactions_scr;
   };
 
 
@@ -172,30 +201,18 @@ var UIController = (function() {
     var input = document.getElementById(DOMstrings.username_field);
     input.value = '';
     input.focus();
-    current_screen = screens.lost_password;
+    current_screen = screens.lost_password_scr;
   };
 
 
-  var showMenuLogin = function() {
-    var DOMin, DOMout;
-
-    DOMin  = document.getElementById(DOMstrings.menuLogin);
-    DOMout = document.getElementById(DOMstrings.menuLogout);
-
-    DOMin.style.display = 'block';
-    DOMout.style.display ='none';
+  var iniz_update_password_form = function() {
+    document.getElementById(DOMstrings.password_field).value = '';
+    var input = document.getElementById(DOMstrings.confirm_password_field);
+    input.value = '';
+    input.focus();
+    current_screen = screens.update_password_scr;
   };
 
-
-  var showMenuLogout = function() {
-    var DOMin, DOMout;
-
-    DOMin  = document.getElementById(DOMstrings.menuLogin);
-    DOMout = document.getElementById(DOMstrings.menuLogout);
-
-    DOMin.style.display = 'none';
-    DOMout.style.display ='block';
-  };
 
 
   return {
@@ -211,18 +228,21 @@ var UIController = (function() {
 
 
     addListItem: function(obj, type) {
-      var html, newHtml, element;
+      var html, newHtml, element, dateStr;
       // Create HTML string with placeholder text
       if (type === 'inc') {
         element = DOMstrings.incomeContainer;
-        html = '<div class="item" id="inc-%id%"><div class="item__description">%description%</div><div class="amount"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline" id="trans_del_btn"></i></button></div></div></div>';
+        html = '<div class="item" id="inc-%id%"><div class="item__blk"><div class="item__date">%trans_date%</div><div class="item__description">%description%</div></div><div class="amount"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline" id="trans_del_btn"></i></button></div></div></div>';
 
       } else if (type === 'exp') {
         element = DOMstrings.expensesContainer;
-        html = '<div class="item" id="exp-%id%"><div class="item__description">%description%</div><div class="amount"><div class="item__value">%value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline" id="trans_del_btn"></i></button></div></div></div>';
+        html = '<div class="item" id="exp-%id%"><div class="item__blk"><div class="item__date" >%trans_date%</div><div class="item__description">%description%</div></div><div class="amount"><div class="item__value">%value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline" id="trans_del_btn"></i></button></div></div></div>';
       }
+      // Convert d,m,y to a string dd/mm/yy
+      dateStr = formatDate(obj.day, obj.month, obj.year);
       // Replace the placeholder text with some actual data
       newHtml = html.replace('%id%', obj.id);
+      newHtml = newHtml.replace('%trans_date%', dateStr + ': ');
       newHtml = newHtml.replace('%description%', obj.description);
       newHtml = newHtml.replace('%value%', formatNumber(obj.value, type));
       // Insert the HTML into the DOM
@@ -316,30 +336,68 @@ var UIController = (function() {
 
 
     showAlert: function(type, msg) {
-      var alert;
+      var alert, nonAlert, errAlert, sucAlert;
 
+      errAlert = document.querySelector(DOMstrings.alertError);
+      sucAlert = document.querySelector(DOMstrings.alertSuccess);
       if (type === alertMessages.error) {
-        alert = document.querySelector(DOMstrings.alertError);
+        alert = errAlert;
+        nonAlert = sucAlert;
       } else {
-        alert = document.querySelector(DOMstrings.alertSuccess);
+        alert = sucAlert;
+        nonAlert = errAlert;
       }
-      alert.textContent = capitalize(type) + ': ' + msg;
-      alert.style.display = 'block';
+      alert.textContent        = capitalize(type) + ': ' + msg;
+      alert.style.display      = 'block';
+      nonAlert.style.display   = 'none';
       setTimeout(function() {
-        alert.style.display = 'none';
+        alert.style.display= 'none';
       }, 2000);
     },
 
 
-    clearBudgetDisplay: function() {
-      this.displayMonth();
-      this.displayBudget({
-        budget: 0,
-        totalInc: 0,
-        totalExp: 0,
-        percentage: -1
+    toggleDateDisplay: function() {
+      var dateStatus, dateColor;
+
+      dateStatus = document.querySelector(DOMstrings.menuDateStatus);
+      // What color is the dateStatus?
+      dateColor = document.defaultView.getComputedStyle(dateStatus,null).getPropertyValue('color');
+
+      if (dateColor === 'rgb(255, 204, 204)') {    // Is it ON?
+        dateStatus.style.color = 'rgb(255, 255, 204)';
+        dateStatus.textContent = 'OFF';
+        this.hideItemDate();
+      } else {
+        dateStatus.style.color = 'rgb(255, 204, 204)';
+        dateStatus.textContent = 'ON';
+        this.showItemDate();
+      }
+    },
+
+
+    hideItemDate: function() {
+      var itemDates;
+
+      itemDates = document.querySelectorAll(DOMstrings.item_date);
+
+      nodeListForEach(itemDates, function(cur) {
+        cur.classList.toggle('hide-date');
       });
     },
+
+
+    showItemDate: function() {
+      var itemDates;
+
+      itemDates = document.querySelectorAll(DOMstrings.item_date);
+
+      nodeListForEach(itemDates, function(cur) {
+        cur.classList.toggle('hide-date');
+      });
+    },
+
+
+
 
 
     //=================  PAGE RELATED FUNCTIONS  ========================
@@ -347,7 +405,7 @@ var UIController = (function() {
 
     showTransactionsPage: function(target_div) {
       change_content(target_div, pages.transaction_page, iniz_transaction_screen );
-      showMenuLogout();
+      current_screen = screens.transactions_scr;
     },
 
     clearTransactionPage: function() {
@@ -357,7 +415,7 @@ var UIController = (function() {
 
     showLoginPage: function(target_div) {
       change_content(target_div, pages.login_page, iniz_login_form);
-      showMenuLogin();
+      current_screen = screens.login_scr;
     },
 
 
@@ -368,7 +426,7 @@ var UIController = (function() {
 
     showRegisterPage: function(target_div) {
       change_content(target_div, pages.register_page, iniz_register_form);
-      showMenuLogin();
+      current_screen = screens.register_scr;
     },
 
     clearRegisterForm: function() {
@@ -378,11 +436,21 @@ var UIController = (function() {
 
     showLostPasswordPage: function(target_div) {
       change_content(target_div, pages.lost_password_page, iniz_lost_password_form);
-      showMenuLogin();
+      current_screen = screens.lost_password_scr;
     },
 
     clearLostPasswordForm: function() {
       iniz_lost_password_form();
+    },
+
+
+    showUpdatePasswordPage: function(target_div) {
+      change_content(target_div, pages.update_password_page, iniz_update_password_form);
+      current_screen = screens.update_password_scr;
+    },
+
+    clearUpdatePasswordForm: function() {
+      iniz_update_password_form();
     },
 
 
@@ -418,13 +486,99 @@ var UIController = (function() {
     },
 
 
+    // Return un & email in an object
+    getLostPasswordFieldData: function() {
+      var username, password, conpassword, email;
+
+      username    = document.getElementById(DOMstrings.username_field).value;
+      email       = document.getElementById(DOMstrings.email_field).value;
+
+      return {
+        username:    username,
+        email:       email
+      };
+    },
+
+
+    // Return pw & conpw in an object
+    getUpdatePasswordFieldData: function() {
+      var password, conpassword;
+
+      password    = document.getElementById(DOMstrings.password_field).value;
+      conpassword = document.getElementById(DOMstrings.confirm_password_field).value;
+
+      return {
+        password:    password,
+        conpassword: conpassword
+      };
+    },
+
+
+    showMenuRegister: function() {
+      var DOMreg;
+
+      DOMreg  = document.getElementById(DOMstrings.menuRegister);
+      DOMreg.style.display = 'block';
+    },
+
+    hideMenuRegister: function() {
+      var DOMreg;
+
+      DOMreg  = document.getElementById(DOMstrings.menuRegister);
+      DOMreg.style.display = 'none';
+    },
+
+
+    showMenuLogin: function() {
+      var DOMin, DOMout;
+
+      DOMin  = document.getElementById(DOMstrings.menuLogin);
+      DOMout = document.getElementById(DOMstrings.menuLogout);
+
+      DOMin.style.display = 'block';
+      DOMout.style.display ='none';
+    },
+
+
+    showMenuLogout: function() {
+      var DOMin, DOMout;
+
+      DOMin  = document.getElementById(DOMstrings.menuLogin);
+      DOMout = document.getElementById(DOMstrings.menuLogout);
+
+      DOMin.style.display = 'none';
+      DOMout.style.display ='block';
+    },
+
+
+    hideMenuShowDate: function() {
+      var DOMpref, DOMstatus;
+
+      DOMpref  = document.getElementById(DOMstrings.menuShowDate);
+      DOMstatus = document.querySelector(DOMstrings.menuDateStatus);
+      DOMpref.style.display = 'none';
+      DOMstatus.style.display = 'none';
+    },
+
+
+    showMenuShowDate: function() {
+      var DOMpref;
+
+      DOMpref  = document.getElementById(DOMstrings.menuShowDate);
+      DOMstatus = document.querySelector(DOMstrings.menuDateStatus);
+      DOMpref.style.display = 'block';
+      DOMstatus.style.display = 'block';
+    },
+
+
     getCurrentScreen: function() {
       return current_screen;
     },
 
 
-
+    displayUser: function(user) {
+      document.querySelector(DOMstrings.userLabel).textContent = capitalize(user);
+    },
 
   };
-
 })();

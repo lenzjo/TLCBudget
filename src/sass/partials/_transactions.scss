@@ -1,25 +1,7 @@
 /****************************************
 *** TRANSACTIONS
 ****************************************/
-.transactions {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  max-width: 600px;
-  width: 100%;
-  margin: 0 auto;
-  position: relative;
-  #page_cover {
-    width: 100%;
-    height: 110%;
-    background-color: #fff;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 10;
-    display: none;
-  }
-}
+
 .income,
 .expenses{
   display: flex;
@@ -59,7 +41,7 @@
 .item {
   display: flex;
   justify-content: space-between;
-  padding: 5px;
+  padding: 20px 10px;
   border-bottom: 1px solid $inputAccent;
   &:hover .item__delete--btn {
     display: block;
@@ -75,6 +57,14 @@
   }
   &:nth-child(even) {
     background-color: $inputBG;
+  }
+  &__blk {
+    display: flex;
+    flex-direction: row;
+    color: #555;
+  }
+  &__date {
+    margin-right: .5em;
   }
   .amount {
     display: flex;
@@ -108,6 +98,10 @@
   }
 }
 
+.hide-date {
+  display: none;
+}
+
 .unpaid {
   background-color: #ffdad9!important;
   cursor: pointer;
@@ -127,14 +121,14 @@
 // SM sized media-queries
 @mixin transDisp--sm() {
   .item {
-    padding: 10px;
+    padding: 15px 10px;
   }
 }
 
 
 // MD sized media-queries
 @mixin transDisp--md() {
-  .transactions {
+  .content_area {
     flex-direction: row;
     justify-content: space-between;
     max-width: 1000px;
@@ -166,7 +160,7 @@
   }
 
   .item {
-    padding: 15px;
+    padding: 10px 10px;
   }
 }
 
@@ -175,7 +169,7 @@
 @mixin transDisp--lg() {
 
   .item {
-    padding: 20px;
+    padding: 7px 10px;
   }
 
   .income,

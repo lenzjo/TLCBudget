@@ -2,51 +2,108 @@
 *** MENU
 ****************************************/
 
-.menu {
+.menubar {
   background-color: #444;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  border-bottom: 1px solid #222;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  h1 {
+  font-size: 1em;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0;
+  margin-left: 10px;
+  line-height: 1;
+    &:hover {
+      color: #ffc;
+    }
+  }
+}
+.menu {
+  display: flex;
+  align-items: center;
   &__login,
   &__logout,
-  &__register {
+  &__register,
+  &__show_date {
     color: #bbb;
+  }
+  &__login,
+  &__logout,
+  &__register,
+  &__show_date,
+  &__date{
     text-decoration: none;
     margin-right: 15px;
-    padding: 10px;
+    padding: 10px 10px;
     text-transform: uppercase;
     font-size: 1em;
     &:hover {
       color: #fff;
     }
   }
+  &__show_date {
+    margin-right: 0;
+    padding: 0;
+  }
+  &__date {
+    color: #fcc;
+    margin-right: 5px;
+    padding-left: 0;
+  }
+
   &__logout {
     display: none;
   }
 }
-
 
 //================  MEDIA QUERIES  ============================
 
 
 // SM sized media-queries
 @mixin menu--sm() {
+  .logo {
+    h1{
+      font-size: 1.2em;
+      margin-left: 20px;
+      letter-spacing: 1px;
+    }
+  }
   .menu {
     &__login,
     &__logout,
-    &__register {
-      padding: 8px 0;
+    &__register,
+    &__show_date {
+      padding: 7px 0;
     }
   }
 }
 
 
+
 // MD sized media-queries
 @mixin menu--md() {
+  .logo {
+    h1{
+      font-size: 1.4em;
+      padding: 5px 0;
+      letter-spacing: 2px;
+    }
+  }
   .menu {
     &__login,
     &__logout,
     &__register {
       margin-right: 10px;
+    }
+    &__login,
+    &__logout,
+    &__register,
+    &__show_date {
       padding: 6px 0;
       font-size: .9em;
     }
@@ -56,10 +113,17 @@
 
 // LG sized media-queries
 @mixin menu--lg() {
+  .logo {
+    h1{
+      font-size: 1.6em;
+      padding: 5px 0;
+    }
+  }
   .menu {
     &__login,
     &__logout,
-    &__register {
+    &__register,
+    &__show_date {
       padding: 5px 0;
     }
   }

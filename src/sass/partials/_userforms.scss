@@ -6,45 +6,72 @@
   border: 1px solid #666;
   border-radius: 10px;
   padding: 0;
-  padding-bottom: 5px;
   margin: 0 auto;
   background-color: $formBG;
   box-shadow: $formShadow;
-  margin-top: 10px;
+  margin-top: 30px;
   &-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
+  }
+  &-empty-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: lighten($incomeGreen, 30%);
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-top: 1px solid #666;
+    margin-top: 10px;
+  }
+  &-btn-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px 10px 20px;
+    background-color: lighten($incomeGreen, 30%);
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-top: 1px solid #666;
+    margin-top: 10px;
     a {
       text-decoration: none;
       font-size: .7em;
-      border: 1px solid darken(#fcc, 10%);
-      padding: 3px 8px;
-      border-radius: 3px;
-      background-color: #fcc;
+      border: 1px solid darken(#e66, 10%);
+      padding: 5px 8px;
+      border-radius: 18px;
+      background-color: #e66;
       color: #000;
       text-transform: uppercase;
       &:hover {
         box-shadow: $formShadow;
+        background-color: lighten(#e66, 10%);
+      }
+      &:active {
+        background-color: darken(#e66, 15%);
       }
     }
   }
   h2 {
     text-align: center;
-    background-color: $incomeGreen;
-    padding: 5px 0;
+    background-color: lighten($incomeGreen, 30%);
+    text-shadow: 1px 1px 1px #666;
+    padding: 5px 0 10px 0;
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
     color: #fff;
     border-bottom: 1px solid #666;
-    margin-top: 0;
+    margin: 0 0 5px 0;
   }
   input {
     margin-left: 10px;
     padding: 3px;
     border-radius: 4px;
     border: 1px solid grey;
+    width: 100%;
     &:focus {
       background-color: #efe;
       outline: none;
@@ -55,20 +82,20 @@
 
 
 .btn {
-  border: 1px solid darken($incomeGreen, 10%);
+  border: 1px solid #e5a900;
   padding: 5px 20px;
   border-radius: 8px;
-  background-color: $incomeGreen;
+  background-color: #ffbc00;
   color: #fff;
   font-weight: bold;
   cursor: pointer;
   &:hover {
-    background-color: lighten($incomeGreen, 10%);
+    background-color: lighten(#ffbc00, 10%);
     text-shadow: 1px 1px 1px #000;
     box-shadow: $formShadow;
   }
   &:focus {
     outline: none;
-    background-color: darken($incomeGreen, 10%);
+    background-color: darken(#ffbc00, 5%);
   }
 }

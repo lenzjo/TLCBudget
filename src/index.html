@@ -10,17 +10,23 @@
 
 
   <body>
-    <div class="menu">
-      <a href="#" class="menu__login" id="menu__login--link">Login</a>
-      <a href="#" class="menu__logout" id="menu__logout--link">Logout</a>
-      <a href="#" class="menu__register" id="menu__register--link">Register</a>
-    </div>
 
+    <div class="menubar">
+      <div class="logo">
+        <h1>JSBudget</h1>
+      </div>
+      <nav class="menu">
+        <a href="#" class="menu__show_date" id="menu__show_date--link">Date:  </a><span class="menu__date">ON</span>
+        <a href="#" class="menu__login" id="menu__login--link">Login</a>
+        <a href="#" class="menu__logout" id="menu__logout--link">Logout</a>
+        <a href="#" class="menu__register" id="menu__register--link">Register</a>
+      </nav>
+    </div>
 
     <div class="header">
       <div class="budget">
         <div class="budget__title">
-          Available Budget in <span class="budget__title--month">%Month%</span>:
+          Budget for <span class="budget__title--user">%User%</span> in <span class="budget__title--month">%Month%</span>:
         </div>
 
         <div class="budget__value">+ 2,345.64</div>
@@ -62,11 +68,10 @@
     </div>
 
 
-    <div class="transactions">
+    <div class="content_area">
 
     </div><!-- END transactions/content_area -->
 
-
-    <script src="app.js"></script>
+  <script src="app.js"></script>
   </body>
 </html>

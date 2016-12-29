@@ -11,7 +11,12 @@ body {
   font-weight: 400;
 }
 
-
+.content_area {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+}
 
 .red { color: $expenseRed !important; }
 .red-focus { border: 1px solid $expenseRed !important; }

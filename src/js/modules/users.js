@@ -9,66 +9,80 @@ var usersController = (function() {
   };
 
   var user_file_name  = 'userList';
-  var current_user    = 'Nobody';
+  var default_user    = 'nobody';
+  var current_user    = default_user;
 
 
   // Get the list of users
   var load_user_list = function() {
-    var json_str, user_list;
+    var json_str, userList;
 
     json_str = localStorage.getItem(user_file_name);
-    user_list = JSON.parse(json_str);
-    if (user_list === null) { user_list = [];}
+    userList = JSON.parse(json_str);
+    if (userList === null) { userList = [];}
 
-    return user_list;
+    return userList;
   };
 
 
   // Save the list of users
-  var save_user_list = function(user_list) {
-    localStorage.setItem(user_file_name, JSON.stringify(user_list));
+  var save_user_list = function(userList) {
+    localStorage.setItem(user_file_name, JSON.stringify(userList));
   };
 
 
   // Do username & password match a user on file?
   var validate_credentials = function(user) {
-    var list, person;
+    var userList, person;
 
-    list = load_user_list();
+    userList = load_user_list();
     person = null;
-    for (var i = 0; i < list.length; i++) {
-      if (user.username !== list[i].username || user.password !== list[i].password) {
+    for (var i = 0; i < userList.length; i++) {
+      if (user.username !== userList[i].username || user.password !== userList[i].password) {
         continue;
       }
-      person = list[i];
+      person = userList[i];
     }
     return person;
   };
 
+  // Does the username exist?
+  var locate_username = function(user) {
+      var userList, person;
 
-  // Create a unique id
-  var newID = function(list) {
-    var id = 0;
-
-    if(list.length > 0) {
-      id = list[list.length - 1].id + 1;
-    }
-    return id;
+      userList = load_user_list();
+      person = null;
+      for (var i = 0; i < userList.length; i++) {
+        if ( user.username !== userList[i].username ) {
+          continue;
+        }
+        person = i;
+      }
+      return person;
   };
 
 
+  // Create a unique id
+  var newID = function(userList) {
+    var id = 0;
 
+    if(userList.length > 0) {
+      id = userList[userList.length - 1].id + 1;
+    }
+    return id;
+  };
 
 
   return {
 
     // Get a count of users and optionally show their names
     getUsers: function(show) {
-      var userCount, userList, idx;
+      var userCount, userList, person, idx;
 
-      userList = load_user_list();
+      userList  = load_user_list();
       userCount = userList.length;
-      console.log('Memberships: ' + userCount + ' people are using this app.');
+      person    = userCount === 1 ? 'person has' : 'people have';
+      console.log('Application: ' + userCount + ' ' + person + ' registered.');
       if (show) {
         for  (idx = 0; idx < userList.length; idx++) {
           console.log( idx + ': ' + userList[idx].username);
@@ -96,6 +110,43 @@ var usersController = (function() {
     },
 
 
+    // Delete a user by username
+    deleteUser: function(person) {
+      var userList, username, ptr, idx;
+
+      username = person.username;             // Get the person's username
+      userList = load_user_list();            // Load in the user_list
+
+      ptr = userList.map(function(current) {
+        return current.username;
+      });
+
+      idx = ptr.indexOf(username);
+
+      if (idx !== -1) {
+        userList.splice(idx, 1);              // Delete the user if found
+        save_user_list(userList);             // and save back the user_list
+      }
+    },
+
+
+    // Update a user's password
+    updateUser: function(person) {
+      var userList, ptr, updated;
+
+      ptr = locate_username(person);
+      if ( ptr !== null) {
+        userList = load_user_list();
+        userList[ptr].password = person.password;
+        save_user_list(userList);
+        updated = true;
+      } else {
+        updated =false;
+      }
+      return updated;
+    },
+
+
     // If valid return user obj otherwise return null
     verifyUser: function(person) {
       return validate_credentials(person);
@@ -104,15 +155,46 @@ var usersController = (function() {
 
     // Has username been used already?
     find_username: function(user) {
-      var list, person;
+      var ptr, person, userList;
 
-      list = load_user_list();
+      ptr = locate_username(user);
+      if ( ptr === null) {
+        person = null
+      } else {
+        userList = load_user_list();
+        person = userList[ptr];
+      }
+      return person;
+    },
+
+
+    // Do user and email belong together?
+    find_email: function(user) {
+      var userList, person;
+
+      userList = load_user_list();
       person = null;
-      for (var i = 0; i < list.length; i++) {
-        if ( user.username !== list[i].username ) {
+      for (var i = 0; i < userList.length; i++) {
+        if ( user.email !== userList[i].email) {
           continue;
         }
-        person = list[i];
+        person = userList[i];
+      }
+      return person;
+    },
+
+
+    // Do user and email belong together?
+    find_user_and_email: function(user) {
+      var userList, person;
+
+      userList = load_user_list();
+      person = null;
+      for (var i = 0; i < userList.length; i++) {
+        if ( user.email !== userList[i].email || user.username !== userList[i].username) {
+          continue;
+        }
+        person = userList[i];
       }
       return person;
     },
@@ -120,15 +202,15 @@ var usersController = (function() {
 
     // Has password already been used?
     find_password: function(user) {
-      var list, person;
+      var userList, person;
 
-      list = load_user_list();
+      userList = load_user_list();
       person = null;
-      for (var i = 0; i < list.length; i++) {
-        if ( user.password !== list[i].password ) {
+      for (var i = 0; i < userList.length; i++) {
+        if ( user.password !== userList[i].password ) {
           continue;
         }
-        person = list[i];
+        person = userList[i];
       }
       return person;
     },
@@ -137,6 +219,16 @@ var usersController = (function() {
     // Return the currently loggedin username
     getCurrentUser: function() {
       return current_user;
+    },
+
+    // Set the current user
+    setCurrentUser: function(username) {
+      current_user = username;
+    },
+
+    // Get default user
+    getDefaultUser: function() {
+      return default_user;
     },
   };
 

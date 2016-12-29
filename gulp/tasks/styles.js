@@ -1,9 +1,9 @@
 var gulp        = require('gulp'),
     sass        = require('gulp-sass'),
-    srcmaps      = require('gulp-sourcemaps'),
+    srcmaps     = require('gulp-sourcemaps'),
     autoprefix  = require('gulp-autoprefixer'),
     rename      = require('gulp-rename'),
-    cssnano      = require('gulp-cssnano');
+    cssnano     = require('gulp-cssnano');
 
 var DIST_DIR    = './public';
 
