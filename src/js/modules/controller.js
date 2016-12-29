@@ -153,12 +153,12 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl, userCtrl) {
     entries   = UICtrl.getLoginFieldData();
     username  = entries.username;
     if (username === '') {
-      UICtrl.showAlert(MSG.error, MSG.missingUsername);
+      UICtrl.showAlert(MSG.error, MSG.missingUsername, DOM.username_field_id);
       return;
     }
     password  = entries.password;
     if (password === '') {
-      UICtrl.showAlert(MSG.error, MSG.missingPassword);
+      UICtrl.showAlert(MSG.error, MSG.missingPassword, DOM.password_field_id);
       return;
     }
     validUser = userCtrl.verifyUser(entries);
@@ -166,7 +166,7 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl, userCtrl) {
       userCtrl.setCurrentUser(validUser.username);
       displayTransactionsPage();
     } else {
-      UICtrl.showAlert(MSG.error, MSG.unknownUser);
+      UICtrl.showAlert(MSG.error, MSG.unknownUser, null);
     }
   };
 
@@ -179,41 +179,41 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl, userCtrl) {
     // Found the username?
     username = entries.username;
     if (username === '') {
-      UICtrl.showAlert(MSG.error, MSG.missingUsername);
+      UICtrl.showAlert(MSG.error, MSG.missingUsername, DOM.username_field_id);
       return;
     } else if (userCtrl.find_username(entries) !== null) {
-      UICtrl.showAlert(MSG.error, MSG.usernamePresent);
+      UICtrl.showAlert(MSG.error, MSG.usernamePresent, DOM.username_field_id);
       return;
     }
     // Found the email?
     email = entries.password;
     if (email === '') {
-      UICtrl.showAlert(MSG.error, MSG.missingEmail);
+      UICtrl.showAlert(MSG.error, MSG.missingEmail, DOM.email_field_id);
       return;
     } else if (userCtrl.find_email(entries) !== null) {
-      UICtrl.showAlert(MSG.error, MSG.emailPresent);
+      UICtrl.showAlert(MSG.error, MSG.emailPresent, DOM.email_field_id);
       return;
     }
     // Found the password?
     password = entries.password;
     if (password === '') {
-      UICtrl.showAlert(MSG.error, MSG.missingUsername);
+      UICtrl.showAlert(MSG.error, MSG.missingUsername, DOM.username_field_id);
       return;
     } else if (userCtrl.find_password(entries) !== null) {
-      UICtrl.showAlert(MSG.error, MSG.passwordPresent);
+      UICtrl.showAlert(MSG.error, MSG.passwordPresent, DOM.password_field_id);
       return;
     }
     // Are both password entries the same?
     conpassword = entries.conpassword;
     if (password !== conpassword) {
-      UICtrl.showAlert(MSG.error, MSG.passwordMismatch);
+      UICtrl.showAlert(MSG.error, MSG.passwordMismatch, DOM.confirm_password_field_id);
       return;
     }
     // Correct input, so go and create & save the new use.
     if (userCtrl.createUser(entries) === null) {
-      UICtrl.showAlert(MSG.error, MSG.entryError);
+      UICtrl.showAlert(MSG.error, MSG.entryError, null);
     } else {
-       UICtrl.showAlert(MSG.success, MSG.registered);
+       UICtrl.showAlert(MSG.success, MSG.registered, null);
     }
   };
 
@@ -226,19 +226,19 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl, userCtrl) {
     // Found the username?
     username = entries.username;
     if (username === '') {
-      UICtrl.showAlert(MSG.error, MSG.missingUsername);
+      UICtrl.showAlert(MSG.error, MSG.missingUsername, DOM.username_field_id);
       return;
     }
     // Found the email?
     email = entries.email;
     if (email === '') {
-      UICtrl.showAlert(MSG.error, MSG.missingEmail);
+      UICtrl.showAlert(MSG.error, MSG.missingEmail, DOM.email_field_id);
       return;
     }
     // Is the user present on the system?
     user = userCtrl.find_user_and_email(entries);
      if (user === null) {
-      UICtrl.showAlert(MSG.error, MSG.unknownUser);
+      UICtrl.showAlert(MSG.error, MSG.unknownUser, null);
       return;
     }
     // Yes, so show password update modal
@@ -258,13 +258,13 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl, userCtrl) {
       UICtrl.showAlert(MSG.error, MSG.missingUsername);
       return;
     } else if (userCtrl.find_password(entries) !== null) {
-      UICtrl.showAlert(MSG.error, MSG.passwordPresent);
+      UICtrl.showAlert(MSG.error, MSG.passwordPresent, DOM.password_field_id);
       return;
     }
     // Are both password entries the same?
     conpassword = entries.conpassword;
     if (password !== conpassword) {
-      UICtrl.showAlert(MSG.error, MSG.passwordMismatch);
+      UICtrl.showAlert(MSG.error, MSG.passwordMismatch, DOM.confirm_password_field_id);
       return;
     }
     // 1. Get user from temp store
@@ -279,7 +279,7 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl, userCtrl) {
       displayLoginPage();
     } else {
       // 4b. Failure - Change to Lost Password Page
-      UICtrl.showAlert(MSG.error, MSG.updateUserFail);
+      UICtrl.showAlert(MSG.error, MSG.updateUserFail, null);
       displayLostPasswordPage();
     }
   };
@@ -404,7 +404,7 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl, userCtrl) {
     } else {
       // 5. Show any errors
       if (input.description === "") {
-        UICtrl.showAlert(MSG.error, MSG.missingDescription);
+        UICtrl.showAlert(MSG.error, MSG.missingDescription, DOM.inputDescription);
       }
     }
   };

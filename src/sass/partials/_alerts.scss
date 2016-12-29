@@ -14,6 +14,7 @@
     color: #fff;
     padding: 5px 10px;
     display: none;
+    transition: all .4s ease-in-out;
   }
   &__msg-error {
     border: 2px solid $expenseRed;

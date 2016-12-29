@@ -40,6 +40,11 @@ var UIController = (function() {
     confirm_password_field:   'conpassword',
     email_field:              'email',
 
+    username_field_id:        '#username',
+    password_field_id:        '#password',
+    confirm_password_field_id:'#conpassword',
+    email_field_id:           '#email',
+
     trans_delete_btn:         'trans_del_btn',
     login_submit_btn:         'login_submit_btn',
     register_submit_btn:      'register_submit_btn',
@@ -94,6 +99,18 @@ var UIController = (function() {
   };
 
 
+  var nodeListForEach = function(list, callback) {
+    for (var i = 0; i < list.length; i++) {
+      callback(list[i], i);
+    }
+  };
+
+
+  var capitalize = function(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+  };
+
+
   var formatNumber = function(num, type) {
     var numSplit, int, dec;
 
@@ -107,18 +124,6 @@ var UIController = (function() {
     }
     dec = numSplit[1];
     return (type === 'exp' ? '-' : '+') + ' ' + int + '.' + dec;
-  };
-
-
-  var nodeListForEach = function(list, callback) {
-    for (var i = 0; i < list.length; i++) {
-      callback(list[i], i);
-    }
-  };
-
-
-  var capitalize = function(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
   };
 
 
@@ -143,6 +148,16 @@ var UIController = (function() {
 
     dateStr = day + '/' + month + '/' + year;
     return dateStr;
+  };
+
+  var getPropertyValue = function(item, prop) {
+    var DOMitem, propValue;
+
+    DOMitem = document.querySelector(item);
+      // What color is the dateStatus?
+    propValue = document.defaultView.getComputedStyle(DOMitem,null).getPropertyValue(prop);
+
+    return propValue;
   };
 
 
@@ -335,11 +350,14 @@ var UIController = (function() {
     },
 
 
-    showAlert: function(type, msg) {
-      var alert, nonAlert, errAlert, sucAlert;
+    showAlert: function(type, msg, loc) {
+      var alert, nonAlert, errAlert, sucAlert, errLoc, bgColor;
 
       errAlert = document.querySelector(DOMstrings.alertError);
       sucAlert = document.querySelector(DOMstrings.alertSuccess);
+      if (loc !== null) {
+        errLoc = document.querySelector(loc);
+      }
       if (type === alertMessages.error) {
         alert = errAlert;
         nonAlert = sucAlert;
@@ -348,10 +366,19 @@ var UIController = (function() {
         nonAlert = errAlert;
       }
       alert.textContent        = capitalize(type) + ': ' + msg;
+      if (loc !== null) {
+        bgColor = getPropertyValue(loc, 'backgroundColor');
+        errLoc.style.backgroundColor = '#fcc';
+      }
       alert.style.display      = 'block';
       nonAlert.style.display   = 'none';
       setTimeout(function() {
-        alert.style.display= 'none';
+        alert.style.display    = 'none';
+        if (loc !== null) {
+          errLoc.style.backgroundColor = bgColor;
+          errLoc.focus();
+        }
+
       }, 2000);
     },
 
@@ -360,8 +387,8 @@ var UIController = (function() {
       var dateStatus, dateColor;
 
       dateStatus = document.querySelector(DOMstrings.menuDateStatus);
-      // What color is the dateStatus?
-      dateColor = document.defaultView.getComputedStyle(dateStatus,null).getPropertyValue('color');
+
+      dateColor = getPropertyValue(DOMstrings.menuDateStatus, 'color');
 
       if (dateColor === 'rgb(255, 204, 204)') {    // Is it ON?
         dateStatus.style.color = 'rgb(255, 255, 204)';
