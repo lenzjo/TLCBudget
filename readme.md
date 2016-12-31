@@ -17,13 +17,20 @@ My purpose in doing this is to practise what I have learnt in the course and bec
 1. Open your Terminal/Command line inside the `TLCBudget` directory and type `npm install`.
 2. Type `gulp` to compile and create the `public` directory.
 3. Type `gulp watch` and browserSync will open a browser window and show you the result.
+4. Then you can open your fav editor and explore and/or play with the source code.
 
 ## Usage ##
 
-If you want to use this app, go thru the **compilation** process above and then copy the build directory to wherever is good for you. You can then just double-click on the **index.html** file to start it up.
+If you want to use this app, type 'gulp build' in the command-line/terminal and then copy the build directory to wherever is good for you. You can then just double-click on the **index.html** file to start it up.
 
 This app was created on a windows 7 PC and using the Chrome browser. It has NOT been tested on any other combination of OS/browser/computer, so YMMV if you use any other combination ;)
 
+## Features ##
+1. Multi-user capability.
+2. Transaction dates can be shown/hidden by clicking on the ON/OFF in the menubar.
+3. Transactions and user registration details are stored locally.
+4. Responsive design.
+5. Useful error feedback.
 
 
 ## Directory Structure ##
@@ -67,6 +74,7 @@ Of course I had to show the user his/her name and give 'em a **menu** so they co
 
 Error reporting has been tarted-up :) When you make an error, an error message will apppear and the erroneous field will be highlighted. When the error message goes away the field will be restored and the cursor will be placed in it.
 
+Gulpfile has been updated to include 'build' where the css and js files are compressed.
 
 **Phase 6**: 
 

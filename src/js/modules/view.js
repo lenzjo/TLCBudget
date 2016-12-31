@@ -30,6 +30,7 @@ var UIController = (function() {
     menuLogout:               'menu__logout--link',
     menuRegister:             'menu__register--link',
     menuShowDate:             'menu__show_date--link',
+    menuDateToggle:           'menu__date--toggle',
     menuDateStatus:           '.menu__date',
 
     menuLoginLink:            '#menu__login--link',

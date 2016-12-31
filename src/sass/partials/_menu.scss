@@ -34,9 +34,7 @@
   }
   &__login,
   &__logout,
-  &__register,
-  &__show_date,
-  &__date{
+  &__register {
     text-decoration: none;
     margin-right: 15px;
     padding: 10px 10px;
@@ -47,13 +45,21 @@
     }
   }
   &__show_date {
-    margin-right: 0;
+    text-decoration: none;
+    margin-right: 5px;
     padding: 0;
+    text-transform: uppercase;
+    font-size: 1em;
+    cursor: default;
   }
   &__date {
     color: #fcc;
-    margin-right: 5px;
+    margin-right: 15px;
     padding-left: 0;
+    cursor: pointer;
+    &:hover {
+      color: #fff;
+    }
   }
 
   &__logout {

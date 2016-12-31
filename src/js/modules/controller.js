@@ -54,7 +54,7 @@ var controller = (function(budgetCtrl, UICtrl, storeCtrl, userCtrl) {
         display_registration_page();
         break;
 
-      case DOM.menuShowDate:
+      case DOM.menuDateToggle:
         console.log('You want to access Date display toggle');
         toggle_item_date_display();
         break;

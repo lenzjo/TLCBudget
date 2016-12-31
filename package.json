@@ -1,6 +1,11 @@
 {
   "name": "mybudget",
   "version": "1.0.0",
+  "eslintConfig": {
+    "env": {
+      "browser": true
+    }
+  },
   "description": "My version of the course project",
   "main": "index.js",
   "scripts": {
@@ -10,17 +15,20 @@
   "license": "MIT",
   "devDependencies": {
     "browser-sync": "^2.18.2",
+    "del": "^2.2.2",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.1",
     "gulp-concat": "^2.6.1",
     "gulp-cssnano": "^2.1.2",
+    "gulp-eslint": "^3.0.1",
     "gulp-imagemin": "^3.1.1",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.3.2",
     "gulp-sourcemaps": "^1.9.1",
-    "gulp-uncss": "^1.0.6",
+    "gulp-uglify": "^2.0.0",
     "gulp-watch": "^4.3.11",
-    "imagemin-pngquant": "^5.0.0"
+    "imagemin-pngquant": "^5.0.0",
+    "sassdoc": "^2.1.20"
   },
   "dependencies": {
     "normalize.css": "^5.0.0"
