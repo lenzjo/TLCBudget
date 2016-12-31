@@ -36,6 +36,6 @@ gulp.task('build:styles', function() {
     .pipe(rename('styles.css'))
     .pipe(cssnano())
     .pipe(gulp.dest(DIST_DIR))
-    .pipe(sassdoc())
+//    .pipe(sassdoc())
     .resume();
 });

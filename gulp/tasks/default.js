@@ -1,4 +1,6 @@
 var gulp         = require('gulp');
 
 
-gulp.task('default', ['html', 'scripts', 'styles', 'images']);
+gulp.task('default', ['clean'], function() {
+  gulp.start('html', 'scripts', 'styles', 'images');
+});
