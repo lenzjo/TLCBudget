@@ -1,8 +1,6 @@
 var gulp           = require('gulp'),
-    concat         = require('gulp-concat'),
-    sourcemaps     = require('gulp-sourcemaps'),
-    eslint        = require('gulp-eslint'),
-    uglify         = require('gulp-uglify');
+    plugin         = require('gulp-load-plugins')();
+
 
 
 var DIST_DIR = './public';
@@ -19,9 +17,9 @@ gulp.task('scripts', function () {
         './src/js/modules/controller.js',
         './src/js/app.js'
       ])
-    .pipe(sourcemaps.init())
-    .pipe(concat('app.js'))
-    .pipe(sourcemaps.write('./'))
+    .pipe(plugin.sourcemaps.init())
+    .pipe(plugin.concat('app.js'))
+    .pipe(plugin.sourcemaps.write('./'))
     .pipe(gulp.dest(DIST_DIR));
 });
 
@@ -39,9 +37,9 @@ gulp.task('build:scripts', function () {
       ])
 //    .pipe(jshint())
 //    .pipe(jshint.reporter('jshint-stylish'))
-    .pipe(eslint())
-    .pipe(eslint.format())
-    .pipe(concat('app.js'))
-    .pipe(uglify())
+    .pipe(plugin.eslint())
+    .pipe(plugin.eslint.format())
+    .pipe(plugin.concat('app.js'))
+    .pipe(plugin.uglify())
     .pipe(gulp.dest(DIST_DIR));
 });

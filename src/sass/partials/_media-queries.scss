@@ -11,6 +11,7 @@
   @include budget--sm();
   @include transCtrl--sm();
   @include transDisp--sm();
+  @include alerts--sm();
 }
 
 
@@ -19,7 +20,7 @@
   @include menu--md();
   @include budget--md();
   @include transCtrl--md();
-  @include transDisp--md();
+  @include alerts--md();
 }
 
 
@@ -28,5 +29,5 @@
   @include menu--lg();
   @include budget--lg();
   @include transCtrl--lg();
-  @include transDisp--lg();
+  @include alerts--lg();
 }

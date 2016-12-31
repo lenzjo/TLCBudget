@@ -15,7 +15,7 @@
     max-width: 500px;
     border-radius: 8px;
     color: #fff;
-    padding: 5px 10px;
+    padding: 3px 5px;
     margin: 10px auto;
     opacity: 0;
     transform: scale(0);
@@ -34,4 +34,39 @@
 .showAlert {
   opacity: 1;
   transform: scale(1);
+}
+
+
+
+//================  MEDIA QUERIES  ============================
+
+
+// SM sized media-queries
+@mixin alerts--sm() {
+  .alerts {
+    &__msg-error,
+    &__msg-success {
+      padding: 5px 10px;
+    }
+  }
+}
+
+
+// MD sized media-queries
+@mixin alerts--md() {
+  .alerts {
+    &__msg-error,
+    &__msg-success {
+    }
+  }
+}
+
+
+// LG sized media-queries
+@mixin alerts--lg() {
+  .alerts {
+    &__msg-error,
+    &__msg-success {
+    }
+  }
 }
